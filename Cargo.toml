@@ -1,0 +1,12 @@
+[package]
+name = "unitconverter"
+version = "0.1.0"
+edition = "2024"
+description = "A crate for converting between different units of measurement."
+readme = "README.md"
+repository = "https://github.com/JonasEngstrom/unitconverter"
+license = "MIT"
+keywords = ["units", "conversion", "metrics", "measurements", "physics"]
+categories = ["development-tools", "mathematics", "parsing", "science", "value-formatting"]
+
+[dependencies]
