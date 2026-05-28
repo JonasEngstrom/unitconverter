@@ -3,5 +3,14 @@
 version = 4
 
 [[package]]
+name = "si-prefixes"
+version = "1.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7557cd850dc5e1f45e21685eb83faa357908f9f4e76f695f9ca53797fa7e52cc"
+
+[[package]]
 name = "unitconverter"
 version = "0.1.0"
+dependencies = [
+ "si-prefixes",
+]

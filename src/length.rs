@@ -1,5 +1,7 @@
 //! # Units and Operations Pertaining to Length
 
+use si_prefixes::Prefix;
+
 /// # Units of Length
 /// 
 /// ## References
@@ -51,6 +53,21 @@ impl LengthUnit {
             LengthUnit::Yard => "yards",
             LengthUnit::Mile => "miles",
         }
+    }
+}
+
+/// # Measurement of Length
+struct LengthMeasurement { value: f64 }
+
+impl LengthMeasurement {
+    pub fn from(value: f64, prefix: Prefix, unit: LengthUnit) -> Self {
+        Self {
+            value: value * Prefix::conversion_constant(prefix, Prefix::None) * unit.factor()
+        }
+    }
+
+    pub fn to(&self, prefix: Prefix, unit: LengthUnit) -> f64 {
+        self.value * Prefix::conversion_constant(Prefix::None, prefix) / unit.factor()
     }
 }
 
