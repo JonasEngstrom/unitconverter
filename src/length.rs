@@ -4,6 +4,8 @@ use si_prefixes::Prefix;
 
 /// # Units of Length
 /// 
+/// Units for measurment of length.
+/// 
 /// ## References
 /// 
 /// 1. Bureau International des Poids et Mesures. (2025). *Le Système international d’unités/The International System of Units*. 9th edition. [https://doi.org/10.59161/AUEZ1291](https://doi.org/10.59161/AUEZ1291)
@@ -57,15 +59,49 @@ impl LengthUnit {
 }
 
 /// # Measurement of Length
-struct LengthMeasurement { value: f64 }
+/// 
+/// A mesurment of length. Stored internally as meters, but output to any unit the user desires.
+pub struct LengthMeasurement { value: f64 }
 
 impl LengthMeasurement {
+    /// # Store a New Measurement of Length
+    /// 
+    /// Measurements are stored using a value, a prefix, and a unit, as illustrated in the following examples:
+    /// 
+    /// ```
+    /// use unitconverter::length::{ LengthUnit, LengthMeasurement };
+    /// use si_prefixes::Prefix;
+    /// 
+    /// // Desired input format.
+    /// let twelve_centimeters = LengthMeasurement::from(12f64, Prefix::Centi, LengthUnit::Meter);
+    /// let one_inch = LengthMeasurement::from(1f64, Prefix::None, LengthUnit::Inch);
+    /// 
+    /// // Desired output format.
+    /// assert_eq!(twelve_centimeters.to(Prefix::Centi, LengthUnit::Meter), 12f64);
+    /// assert_eq!(one_inch.to(Prefix::None, LengthUnit::Inch), 1f64);
+    /// ```
     pub fn from(value: f64, prefix: Prefix, unit: LengthUnit) -> Self {
         Self {
             value: value * Prefix::conversion_constant(prefix, Prefix::None) * unit.factor()
         }
     }
 
+    /// # Convert a Previously Stored Measurement of Length
+    /// 
+    /// Previously stored `LengthMeasurement`s are converted using a prefix, and a unit, as illustrated in the following examples:
+    /// 
+    /// ```
+    /// use unitconverter::length::{ LengthUnit, LengthMeasurement };
+    /// use si_prefixes::Prefix;
+    /// 
+    /// // Desired input format.
+    /// let twelve_centimeters = LengthMeasurement::from(12f64, Prefix::Centi, LengthUnit::Meter);
+    /// let one_inch = LengthMeasurement::from(1f64, Prefix::None, LengthUnit::Inch);
+    /// 
+    /// // Desired output format.
+    /// assert_eq!(twelve_centimeters.to(Prefix::Centi, LengthUnit::Meter), 12f64);
+    /// assert_eq!(one_inch.to(Prefix::None, LengthUnit::Inch), 1f64);
+    /// ```
     pub fn to(&self, prefix: Prefix, unit: LengthUnit) -> f64 {
         self.value * Prefix::conversion_constant(Prefix::None, prefix) / unit.factor()
     }
@@ -74,6 +110,8 @@ impl LengthMeasurement {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    const EPSILON: f64 = 1e-15f64;
 
     #[test]
     fn factors_are_correct() {
@@ -100,5 +138,12 @@ mod tests {
         assert_eq!(LengthUnit::Foot.name_plural(), "feet");
         assert_eq!(LengthUnit::Yard.name_plural(), "yards");
         assert_eq!(LengthUnit::Mile.name_plural(), "miles");
+    }
+
+    #[test]
+    fn conversion_works() {
+        let test_measurement = LengthMeasurement::from(12f64, Prefix::None, LengthUnit::Inch);
+        let test_result = test_measurement.to(Prefix::None, LengthUnit::Foot);
+        assert!((test_result-1.0f64).abs() < EPSILON);
     }
 }
