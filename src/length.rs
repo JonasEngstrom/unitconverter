@@ -2,6 +2,8 @@
 
 use si_prefixes::Prefix;
 
+use crate::macros::impl_add_and_subtract;
+
 /// # Units of Length
 /// 
 /// Units for measurment of length.
@@ -107,11 +109,13 @@ impl LengthMeasurement {
     }
 }
 
+impl_add_and_subtract!(LengthMeasurement);
+
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    const EPSILON: f64 = 1e-15f64;
+    
+    use crate::macros::assert_almost_eq;
 
     #[test]
     fn factors_are_correct() {
@@ -144,6 +148,42 @@ mod tests {
     fn conversion_works() {
         let test_measurement = LengthMeasurement::from(12f64, Prefix::None, LengthUnit::Inch);
         let test_result = test_measurement.to(Prefix::None, LengthUnit::Foot);
-        assert!((test_result-1.0f64).abs() < EPSILON);
+        assert_almost_eq!(test_result, 1.0f64);
+    }
+
+    #[test]
+    fn addition_of_length_measuremens_work() {
+        let measurement_one = LengthMeasurement::from(12f64, Prefix::Centi, LengthUnit::Meter);
+        let measurement_two = LengthMeasurement::from(60f64, Prefix::Milli, LengthUnit::Meter);
+        let sum = measurement_one + measurement_two;
+
+        assert_eq!(sum.to(Prefix::Centi, LengthUnit::Meter), 18f64);
+    }
+
+    #[test]
+    fn subtraction_of_length_measuremens_work() {
+        let measurement_one = LengthMeasurement::from(12f64, Prefix::Centi, LengthUnit::Meter);
+        let measurement_two = LengthMeasurement::from(60f64, Prefix::Milli, LengthUnit::Meter);
+        let difference = measurement_one - measurement_two;
+
+        assert_eq!(difference.to(Prefix::Centi, LengthUnit::Meter), 6f64);
+    }
+
+    #[test]
+    fn addition_assign_of_length_measuremens_work() {
+        let mut measurement_one = LengthMeasurement::from(12f64, Prefix::Centi, LengthUnit::Meter);
+        let measurement_two = LengthMeasurement::from(60f64, Prefix::Milli, LengthUnit::Meter);
+        measurement_one += measurement_two;
+
+        assert_eq!(measurement_one.to(Prefix::Centi, LengthUnit::Meter), 18f64);
+    }
+
+    #[test]
+    fn subtraction_assign_of_length_measuremens_work() {
+        let mut measurement_one = LengthMeasurement::from(12f64, Prefix::Centi, LengthUnit::Meter);
+        let measurement_two = LengthMeasurement::from(60f64, Prefix::Milli, LengthUnit::Meter);
+        measurement_one -= measurement_two;
+
+        assert_eq!(measurement_one.to(Prefix::Centi, LengthUnit::Meter), 6f64);
     }
 }
