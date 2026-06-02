@@ -12,16 +12,18 @@ use crate::macros::impl_add_and_subtract;
 /// 
 /// 1. Bureau International des Poids et Mesures. (2025). *Le Système international d’unités/The International System of Units*. 9th edition. [https://doi.org/10.59161/AUEZ1291](https://doi.org/10.59161/AUEZ1291)
 /// 2. National Bureau of Standards. (1959) *Refinement of Values for the Yard and the Pound*. [https://www.nist.gov/system/files/documents/2017/05/09/frn-59-5442-1959.pdf](https://www.nist.gov/system/files/documents/2017/05/09/frn-59-5442-1959.pdf)
+/// 3. United Nations Economic Commission for Europe. (1995) *Codes for Units of Measure Used in International Trade*. [https://unece.org/sites/default/files/datastore/fileadmin/DAM/trade/untdid/download/r1224a2.pdf](https://unece.org/sites/default/files/datastore/fileadmin/DAM/trade/untdid/download/r1224a2.pdf)
+/// 4. National Institute of Standards and Technology. (2014) *Specifications, Tolerances, and Other Technical Requirements for Weighing and Measuring Devices*. [https://web.archive.org/web/20160730042942/http://www.nist.gov/pml/wmd/pubs/upload/hb44-14-final-web.pdf](https://web.archive.org/web/20160730042942/http://www.nist.gov/pml/wmd/pubs/upload/hb44-14-final-web.pdf)
 pub enum LengthUnit {
-    /// Defined as the length of the path travelled by light in vacuum during 1 / 299,792,458 seconds, since the 2019 revision of the SI system.<sup>1</sup>
+    /// Defined as the length of the path travelled by light in vacuum during 1 / 299,792,458 seconds, since the 2019 revision of the SI system.<sup>1</sup> Represented by the symbol m.<sup>1</sup>
     Meter,
-    /// Defined as 0.0254 meters, since the adoption of the international yard in 1959.<sup>2</sup>
+    /// Defined as 0.0254 meters, since the adoption of the international yard in 1959.<sup>2</sup> Represented by the symbol in.<sup>3</sup>
     Inch,
-    /// Defined as 0.3048 meters, since the adoption of the international yard in 1959. Equal to 12 inches.<sup>2</sup>
+    /// Defined as 0.3048 meters, since the adoption of the international yard in 1959. Equal to 12 inches.<sup>2</sup> Represented by the symbol ft.<sup>3</sup>
     Foot,
-    /// Defined as 0.9144 meters, since the adoption of the international yard in 1959. Equal to 3 feet.<sup>2</sup>
+    /// Defined as 0.9144 meters, since the adoption of the international yard in 1959. Equal to 3 feet.<sup>2</sup> Represented by the symbol yd.<sup>3</sup>
     Yard,
-    /// Defined as 1609.344 meters, since the adoption of the international yard in 1959. Equal to 1,760 yards.<sup>2</sup>
+    /// Defined as 1609.344 meters, since the adoption of the international yard in 1959. Equal to 1,760 yards.<sup>2</sup> Represented by the symbol mi.<sup>4</sup>
     Mile,
 }
 
@@ -56,6 +58,17 @@ impl LengthUnit {
             LengthUnit::Foot => "feet",
             LengthUnit::Yard => "yards",
             LengthUnit::Mile => "miles",
+        }
+    }
+
+    /// Returns the symbol of a unit.
+    pub fn symbol(&self) -> &str {
+        match self {
+            LengthUnit::Meter => "m",
+            LengthUnit::Inch => "in",
+            LengthUnit::Foot => "ft",
+            LengthUnit::Yard => "yd",
+            LengthUnit::Mile => "mi",
         }
     }
 }
@@ -142,6 +155,15 @@ mod tests {
         assert_eq!(LengthUnit::Foot.name_plural(), "feet");
         assert_eq!(LengthUnit::Yard.name_plural(), "yards");
         assert_eq!(LengthUnit::Mile.name_plural(), "miles");
+    }
+
+    #[test]
+    fn symbols_are_correct() {
+        assert_eq!(LengthUnit::Meter.symbol(), "m");
+        assert_eq!(LengthUnit::Inch.symbol(), "in");
+        assert_eq!(LengthUnit::Foot.symbol(), "ft");
+        assert_eq!(LengthUnit::Yard.symbol(), "yd");
+        assert_eq!(LengthUnit::Mile.symbol(), "mi");
     }
 
     #[test]
