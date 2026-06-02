@@ -15,7 +15,7 @@ use crate::macros::impl_add_and_subtract;
 /// 3. United Nations Economic Commission for Europe. (1995) *Codes for Units of Measure Used in International Trade*. [https://unece.org/sites/default/files/datastore/fileadmin/DAM/trade/untdid/download/r1224a2.pdf](https://unece.org/sites/default/files/datastore/fileadmin/DAM/trade/untdid/download/r1224a2.pdf)
 /// 4. National Institute of Standards and Technology. (2014) *Specifications, Tolerances, and Other Technical Requirements for Weighing and Measuring Devices*. [https://web.archive.org/web/20160730042942/http://www.nist.gov/pml/wmd/pubs/upload/hb44-14-final-web.pdf](https://web.archive.org/web/20160730042942/http://www.nist.gov/pml/wmd/pubs/upload/hb44-14-final-web.pdf)
 pub enum LengthUnit {
-    /// Defined as the length of the path travelled by light in vacuum during 1 / 299,792,458 seconds, since the 2019 revision of the SI system.<sup>1</sup> Represented by the symbol m.<sup>1</sup>
+    /// Defined as the length of the path travelled by light in vacuum during 1 / 299,792,458 seconds, since the 2019 revision of the SI system. Represented by the symbol m.<sup>1</sup>
     Meter,
     /// Defined as 0.0254 meters, since the adoption of the international yard in 1959.<sup>2</sup> Represented by the symbol in.<sup>3</sup>
     Inch,
