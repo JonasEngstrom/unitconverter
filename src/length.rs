@@ -62,7 +62,7 @@ impl LengthUnit {
 
 /// # Measurement of Length
 /// 
-/// A mesurment of length. Stored internally as meters, but output to any unit the user desires.
+/// A measurment of length. Stored internally as meters, but output to any unit the user desires.
 pub struct LengthMeasurement { value: f64 }
 
 impl LengthMeasurement {
