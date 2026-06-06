@@ -63,3 +63,87 @@ impl TimeUnit {
         }
     }
 }
+
+/// # Measurement of Time
+/// 
+/// A measurement of time. Stored internally as seconds, but output to any unit the user desires.
+pub struct TimeMeasurement { value: f64 }
+
+impl TimeMeasurement {
+    /// # Store a New Measurement of Time
+    /// 
+    /// Measurements are stored using a value, a prefix, and a unit, as illustrated in the following example:
+    /// 
+    /// ```
+    /// use unitconverter::time::{ TimeUnit, TimeMeasurement };
+    /// use si_prefixes::Prefix;
+    /// 
+    /// // Desired input format.
+    /// let one_hour = TimeMeasurement::from(1f64, Prefix::None, TimeUnit::Hour);
+    /// 
+    /// // Desired output format.
+    /// assert_eq!(one_hour.to(Prefix::None, TimeUnit::Second), 3_600f64);
+    /// ```
+    pub fn from(value: f64, prefix: Prefix, unit: TimeUnit) -> Self {
+        Self {
+            value: value * Prefix::conversion_constant(prefix, Prefix::None) * unit.factor()
+        }
+    }
+
+    /// # Convert a Previously Stored Measurement of Time
+    /// 
+    /// Previously stored `TimeMeasurement`s are converted using a prefix and a unit, as illustrated in the following example:
+    /// 
+    /// ```
+    /// use unitconverter::time::{ TimeUnit, TimeMeasurement };
+    /// use si_prefixes::Prefix;
+    /// 
+    /// // Desired input format.
+    /// let one_hour = TimeMeasurement::from(1f64, Prefix::None, TimeUnit::Hour);
+    /// 
+    /// // Desired output format.
+    /// assert_eq!(one_hour.to(Prefix::None, TimeUnit::Second), 3_600f64);
+    /// ```
+    pub fn to(&self, prefix: Prefix, unit: TimeUnit) -> f64 {
+        self.value * Prefix::conversion_constant(Prefix::None, prefix) / unit.factor()
+    }
+}
+
+impl_add_and_subtract!(TimeMeasurement);
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn factors_are_correct() {
+        assert_eq!(TimeUnit::Second.factor(), 1f64);
+        assert_eq!(TimeUnit::Minute.factor(), 60f64);
+        assert_eq!(TimeUnit::Hour.factor(), 3_600f64);
+        assert_eq!(TimeUnit::Day.factor(), 86_400f64);
+    }
+
+    #[test]
+    fn singular_names_are_correct() {
+        assert_eq!(TimeUnit::Second.name_singular(),"second");
+        assert_eq!(TimeUnit::Minute.name_singular(),"minute");
+        assert_eq!(TimeUnit::Hour.name_singular(),"hour");
+        assert_eq!(TimeUnit::Day.name_singular(),"day");
+    }
+
+    #[test]
+    fn plural_names_are_correct() {
+        assert_eq!(TimeUnit::Second.name_plural(),"seconds");
+        assert_eq!(TimeUnit::Minute.name_plural(),"minutes");
+        assert_eq!(TimeUnit::Hour.name_plural(),"hours");
+        assert_eq!(TimeUnit::Day.name_plural(),"days");
+    }
+
+    #[test]
+    fn symbol_are_correct() {
+        assert_eq!(TimeUnit::Second.symbol(),"s");
+        assert_eq!(TimeUnit::Minute.symbol(),"min");
+        assert_eq!(TimeUnit::Hour.symbol(),"h");
+        assert_eq!(TimeUnit::Day.symbol(),"d");
+    }
+}
