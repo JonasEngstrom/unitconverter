@@ -6,7 +6,7 @@ use crate::macros::impl_add_and_subtract;
 
 /// # Units of Length
 /// 
-/// Units for measurment of length.
+/// Units for measurement of length.
 /// 
 /// ## References
 /// 
