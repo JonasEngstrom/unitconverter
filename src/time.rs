@@ -146,4 +146,48 @@ mod tests {
         assert_eq!(TimeUnit::Hour.symbol(),"h");
         assert_eq!(TimeUnit::Day.symbol(),"d");
     }
+
+    #[test]
+    fn conversion_works() {
+        let test_measurement = TimeMeasurement::from(3_600f64, Prefix::None, TimeUnit::Second);
+        let test_result = test_measurement.to(Prefix::None, TimeUnit::Hour);
+
+        assert_eq!(test_result, 1f64);
+    }
+
+    #[test]
+    fn addition_of_time_measurements_work() {
+        let measurement_one = TimeMeasurement::from(1f64, Prefix::None, TimeUnit::Hour);
+        let measurement_two = TimeMeasurement::from(30f64, Prefix::None, TimeUnit::Minute);
+        let sum = measurement_one + measurement_two;
+
+        assert_eq!(sum.to(Prefix::None, TimeUnit::Second), 5_400f64);
+    }
+
+    #[test]
+    fn subtraction_of_time_measurements_work() {
+        let measurement_one = TimeMeasurement::from(1f64, Prefix::None, TimeUnit::Hour);
+        let measurement_two = TimeMeasurement::from(30f64, Prefix::None, TimeUnit::Minute);
+        let difference = measurement_one - measurement_two;
+
+        assert_eq!(difference.to(Prefix::None, TimeUnit::Second), 1_800f64);
+    }
+
+    #[test]
+    fn addition_assign_of_time_measurements_work() {
+        let mut measurement_one = TimeMeasurement::from(1f64, Prefix::None, TimeUnit::Hour);
+        let measurement_two = TimeMeasurement::from(30f64, Prefix::None, TimeUnit::Minute);
+        measurement_one += measurement_two;
+
+        assert_eq!(measurement_one.to(Prefix::None, TimeUnit::Second), 5_400f64);
+    }
+
+    #[test]
+    fn subtraction_assign_of_time_measurements_work() {
+        let mut measurement_one = TimeMeasurement::from(1f64, Prefix::None, TimeUnit::Hour);
+        let measurement_two = TimeMeasurement::from(30f64, Prefix::None, TimeUnit::Minute);
+        measurement_one -= measurement_two;
+
+        assert_eq!(measurement_one.to(Prefix::None, TimeUnit::Second), 1_800f64);
+    }
 }
