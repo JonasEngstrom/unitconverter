@@ -103,7 +103,7 @@ impl LengthMeasurement {
 
     /// # Convert a Previously Stored Measurement of Length
     /// 
-    /// Previously stored `LengthMeasurement`s are converted using a prefix, and a unit, as illustrated in the following examples:
+    /// Previously stored `LengthMeasurement`s are converted using a prefix and a unit, as illustrated in the following examples:
     /// 
     /// ```
     /// use unitconverter::length::{ LengthUnit, LengthMeasurement };
