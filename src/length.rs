@@ -32,9 +32,9 @@ impl LengthUnit {
     pub fn factor(&self) -> f64 {
         match self {
             LengthUnit::Meter => 1f64,
-            LengthUnit::Inch => 0.0254f64,
-            LengthUnit::Foot => 0.3048f64,
-            LengthUnit::Yard => 0.9144f64,
+            LengthUnit::Inch => 0.025_4f64,
+            LengthUnit::Foot => 0.304_8f64,
+            LengthUnit::Yard => 0.914_4f64,
             LengthUnit::Mile => 1_609.344f64,
         }
     }
@@ -170,7 +170,8 @@ mod tests {
     fn conversion_works() {
         let test_measurement = LengthMeasurement::from(12f64, Prefix::None, LengthUnit::Inch);
         let test_result = test_measurement.to(Prefix::None, LengthUnit::Foot);
-        assert_almost_eq!(test_result, 1.0f64);
+
+        assert_almost_eq!(test_result, 1f64);
     }
 
     #[test]
