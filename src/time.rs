@@ -24,6 +24,14 @@ pub enum TimeUnit {
 
 impl TimeUnit {
     /// Returns the factor fo converting a unit into seconds.
+    /// 
+    /// ```
+    /// use unitconverter::time::TimeUnit;
+    /// 
+    /// let hour = TimeUnit::Hour;
+    /// 
+    /// assert_eq!(hour.factor(), 3_600f64);
+    /// ```
     pub fn factor(&self) -> f64 {
         match self {
             TimeUnit::Second => 1f64,
@@ -34,6 +42,14 @@ impl TimeUnit {
     }
 
     /// Returns the name of a unit in singular.
+    /// 
+    /// ```
+    /// use unitconverter::time::TimeUnit;
+    /// 
+    /// let minute = TimeUnit::Minute;
+    /// 
+    /// assert_eq!(minute.name_singular(), "minute");
+    /// ```
     pub fn name_singular(&self) -> &str {
         match self {
             TimeUnit::Second => "second",
@@ -44,6 +60,14 @@ impl TimeUnit {
     }
 
     /// Returns the name of a unit in plural.
+    /// 
+    /// ```
+    /// use unitconverter::time::TimeUnit;
+    /// 
+    /// let day = TimeUnit::Day;
+    /// 
+    /// assert_eq!(day.name_plural(), "days");
+    /// ```
     pub fn name_plural(&self) -> &str {
         match self {
             TimeUnit::Second => "seconds",
@@ -54,6 +78,14 @@ impl TimeUnit {
     }
 
     /// Returns the symbol of a unit.
+    /// 
+    /// ```
+    /// use unitconverter::time::TimeUnit;
+    /// 
+    /// let second = TimeUnit::Second;
+    /// 
+    /// assert_eq!(second.symbol(), "s");
+    /// ```
     pub fn symbol(&self) -> &str {
         match self {
             TimeUnit::Second => "s",
@@ -66,7 +98,7 @@ impl TimeUnit {
 
 /// # Measurement of Time
 /// 
-/// A measurement of time. Stored internally as seconds, but output to any unit the user desires.
+/// A measurement of time. Stored internally as seconds, but output as any unit the user desires.
 pub struct TimeMeasurement { value: f64 }
 
 impl TimeMeasurement {

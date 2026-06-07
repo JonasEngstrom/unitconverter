@@ -29,6 +29,14 @@ pub enum LengthUnit {
 
 impl LengthUnit {
     /// Returns the factor for converting a unit into meters.
+    /// 
+    /// ```
+    /// use unitconverter::length::LengthUnit;
+    /// 
+    /// let yard = LengthUnit::Yard;
+    /// 
+    /// assert_eq!(yard.factor(), 0.9144f64);
+    /// ```
     pub fn factor(&self) -> f64 {
         match self {
             LengthUnit::Meter => 1f64,
@@ -40,6 +48,14 @@ impl LengthUnit {
     }
 
     /// Returns the name of a unit in singular.
+    /// 
+    /// ```
+    /// use unitconverter::length::LengthUnit;
+    /// 
+    /// let mile = LengthUnit::Mile;
+    /// 
+    /// assert_eq!(mile.name_singular(), "mile");
+    /// ```
     pub fn name_singular(&self) -> &str {
         match self {
             LengthUnit::Meter => "meter",
@@ -51,6 +67,14 @@ impl LengthUnit {
     }
 
     /// Returns the name of a unit in plural.
+    /// 
+    /// ```
+    /// use unitconverter::length::LengthUnit;
+    /// 
+    /// let foot = LengthUnit::Foot;
+    /// 
+    /// assert_eq!(foot.name_plural(), "feet");
+    /// ```
     pub fn name_plural(&self) -> &str {
         match self {
             LengthUnit::Meter => "meters",
@@ -62,6 +86,14 @@ impl LengthUnit {
     }
 
     /// Returns the symbol of a unit.
+    /// 
+    /// ```
+    /// use unitconverter::length::LengthUnit;
+    /// 
+    /// let meter = LengthUnit::Meter;
+    /// 
+    /// assert_eq!(meter.symbol(), "m");
+    /// ```
     pub fn symbol(&self) -> &str {
         match self {
             LengthUnit::Meter => "m",
@@ -75,7 +107,7 @@ impl LengthUnit {
 
 /// # Measurement of Length
 /// 
-/// A measurment of length. Stored internally as meters, but output to any unit the user desires.
+/// A measurment of length. Stored internally as meters, but output as any unit the user desires.
 pub struct LengthMeasurement { value: f64 }
 
 impl LengthMeasurement {

@@ -22,6 +22,14 @@ pub enum MassUnit {
 
 impl MassUnit {
     /// Returns the factor for converting a unit into kilograms.
+    /// 
+    /// ```
+    /// use unitconverter::mass::MassUnit;
+    /// 
+    /// let pound = MassUnit::Pound;
+    /// 
+    /// assert_eq!(pound.factor(), 0.45359237f64);
+    /// ```
     pub fn factor(&self) -> f64 {
         match self {
             MassUnit::Gram => 0.001f64,
@@ -30,6 +38,14 @@ impl MassUnit {
     }
 
     /// Returns the name of a unit in singular.
+    /// 
+    /// ```
+    /// use unitconverter::mass::MassUnit;
+    /// 
+    /// let gram = MassUnit::Gram;
+    /// 
+    /// assert_eq!(gram.name_singular(), "gram");
+    /// ```
     pub fn name_singular(&self) -> &str {
         match self {
             MassUnit::Gram => "gram",
@@ -38,6 +54,14 @@ impl MassUnit {
     }
 
     /// Returns the name of a unit in plural.
+    /// 
+    /// ```
+    /// use unitconverter::mass::MassUnit;
+    /// 
+    /// let gram = MassUnit::Gram;
+    /// 
+    /// assert_eq!(gram.name_plural(), "grams");
+    /// ```
     pub fn name_plural(&self) -> &str {
         match self {
             MassUnit::Gram => "grams",
@@ -46,6 +70,14 @@ impl MassUnit {
     }
 
     /// Returns the symbol of a unit.
+    /// 
+    /// ```
+    /// use unitconverter::mass::MassUnit;
+    /// 
+    /// let pound = MassUnit::Pound;
+    /// 
+    /// assert_eq!(pound.symbol(), "lb");
+    /// ```
     pub fn symbol(&self) -> &str {
         match self {
             MassUnit::Gram => "g",
@@ -56,7 +88,7 @@ impl MassUnit {
 
 /// # Measurement of Mass
 /// 
-/// A measurement of mass. Stored internally as kilograms, but output to any unit the user desires.
+/// A measurement of mass. Stored internally as kilograms, but output as any unit the user desires.
 pub struct MassMeasurement { value: f64 }
 
 impl MassMeasurement {
