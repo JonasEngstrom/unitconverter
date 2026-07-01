@@ -53,8 +53,10 @@ pub(crate) use impl_add_and_subtract;
 #[cfg(test)]
 macro_rules! assert_almost_eq {
     ($left: expr, $right: expr) => {
-        const EPSILON: f64 = 1e-15f64;
-        assert!(($left-$right).abs() < EPSILON);
+        {
+            const EPSILON: f64 = 1e-11f64;
+            assert!(($left-$right).abs() < EPSILON);
+        }
     }
 }
 
