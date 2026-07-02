@@ -30,7 +30,7 @@ pub enum TemperatureUnit {
     Réaumur,
     /// Estimated to be (T - 273.15) × 0.525 + 7.5, where T is the temperature i Kelvin.<sup>5</sup> Someteimes represented by the symbol °R, but represented by °Rø in this crate, to distinguish it from degrees in the other temperature scales starting with R.
     Rømer,
-    /// Although no definitive conversion factor can be determined based on Newton’s own notes, this crate uses aapproximation of (T - 273.15) × 0.33, where T is the temperature in kelvin. Represented by the symbol °N.<sup>6</sup>
+    /// Although no definitive conversion factor can be determined based on Newton’s own notes, this crate uses approximation of (T - 273.15) × 0.33, where T is the temperature in kelvin. Represented by the symbol °N.<sup>6</sup>
     Newton,
     /// Defined as (373.15 - T) × 3 / 2, where T is the temperature in kelvin. Represented by the symbol °De.<sup>7</sup>
     Delisle,
