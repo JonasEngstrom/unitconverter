@@ -321,4 +321,40 @@ mod tests {
         assert_almost_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Rømer), (10000f64 / 33f64 * 21f64 / 40f64 + 7.5f64) * 10f64);
         assert_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Delisle), 1500f64 - 150000f64 / 33f64);
     }
+
+    #[test]
+    fn addition_of_temperature_measurment_work() {
+        let measurement_one = TemperatureMeasurement::from(-73.15f64, Prefix::None, TemperatureUnit::Celsius);
+        let measurement_two = TemperatureMeasurement::from(1f64, Prefix::Hecto, TemperatureUnit::Kelvin);
+        let sum = measurement_one + measurement_two;
+
+        assert_eq!(sum.to(Prefix::None, TemperatureUnit::Kelvin), 300f64);
+    }
+
+    #[test]
+    fn subtraction_of_temperature_measurment_work() {
+        let measurement_one = TemperatureMeasurement::from(15f64, Prefix::None, TemperatureUnit::Celsius);
+        let measurement_two = TemperatureMeasurement::from(2.7315f64, Prefix::Hecto, TemperatureUnit::Kelvin);
+        let difference = measurement_two - measurement_one;
+
+        assert_eq!(difference.to(Prefix::None, TemperatureUnit::Kelvin), -15f64);
+    }
+
+    #[test]
+    fn addition_assign_of_temperature_measurment_work() {
+        let mut measurement_one = TemperatureMeasurement::from(-73.15f64, Prefix::None, TemperatureUnit::Celsius);
+        let measurement_two = TemperatureMeasurement::from(1f64, Prefix::Hecto, TemperatureUnit::Kelvin);
+        measurement_one += measurement_two;
+
+        assert_eq!(measurement_one.to(Prefix::None, TemperatureUnit::Kelvin), 300f64);
+    }
+
+    #[test]
+    fn subtraction_assign_of_temperature_measurment_work() {
+        let measurement_one = TemperatureMeasurement::from(15f64, Prefix::None, TemperatureUnit::Celsius);
+        let mut measurement_two = TemperatureMeasurement::from(2.7315f64, Prefix::Hecto, TemperatureUnit::Kelvin);
+        measurement_two -= measurement_one;
+
+        assert_eq!(measurement_two.to(Prefix::None, TemperatureUnit::Kelvin), -15f64);
+    }
 }
