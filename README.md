@@ -7,6 +7,12 @@ Unit converter is a crate for converting between different units of measurement.
 
 ## Supported Units
 
+### Amount of Substance
+
+The base unit of amount of substance used in the `unitconverter` crate is moles.
+
+- Mole
+
 ### Electric Current
 
 The base unit of electric current used in the `unitconverter` crate is amperes.
@@ -25,7 +31,7 @@ The base unit of length used in the `unitconverter` crate is meters.
 
 ### Mass
 
-The base unit of mass used in the `unitconverter` crate is kilograms. Note that conversion to and from kilograms still necessitates the use of a prefix, for consistency witht how the rest of the crate is used. 
+The base unit of mass used in the `unitconverter` crate is kilograms. Note that conversion to and from kilograms still necessitates the use of a prefix, for consistency with how the rest of the crate is used. 
 
 - Gram
 - Pound

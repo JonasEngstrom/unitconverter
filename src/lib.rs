@@ -9,3 +9,4 @@ pub mod length;
 pub mod mass;
 pub mod current;
 pub mod temperature;
+pub mod amount_of_substance;
