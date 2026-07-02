@@ -1,4 +1,5 @@
 [![Build and Test](https://github.com/JonasEngstrom/unitconverter/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/JonasEngstrom/unitconverter/actions/workflows/rust.yml)
+[![Crates.io Version](https://img.shields.io/crates/v/unitconverter)](https://crates.io/crates/unitconverter)
 [![codecov](https://codecov.io/gh/JonasEngstrom/unitconverter/branch/main/graph/badge.svg?token=4R7RT01VHT)](https://codecov.io/gh/JonasEngstrom/unitconverter)
 
 # Unit Converter
