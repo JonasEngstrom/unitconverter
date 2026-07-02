@@ -10,3 +10,4 @@ keywords = ["units", "conversion", "metrics", "measurements", "physics"]
 categories = ["development-tools", "mathematics", "parsing", "science", "value-formatting"]
 
 [dependencies]
+si-prefixes = "1.0.2"
