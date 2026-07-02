@@ -10,3 +10,4 @@ pub mod mass;
 pub mod current;
 pub mod temperature;
 pub mod amount_of_substance;
+pub mod luminous_intensity;

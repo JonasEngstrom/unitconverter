@@ -113,7 +113,7 @@ mod tests {
     }
 
     #[test]
-    fn addition_of_current_measuremens_work() {
+    fn addition_of_current_measurements_work() {
         let measurement_one = CurrentMeasurement::from(12f64, Prefix::Centi, CurrentUnit::Ampere);
         let measurement_two = CurrentMeasurement::from(60f64, Prefix::Milli, CurrentUnit::Ampere);
         let sum = measurement_one + measurement_two;
@@ -122,7 +122,7 @@ mod tests {
     }
 
     #[test]
-    fn subtraction_of_current_measuremens_work() {
+    fn subtraction_of_current_measurements_work() {
         let measurement_one = CurrentMeasurement::from(12f64, Prefix::Centi, CurrentUnit::Ampere);
         let measurement_two = CurrentMeasurement::from(60f64, Prefix::Milli, CurrentUnit::Ampere);
         let difference = measurement_one - measurement_two;
@@ -131,7 +131,7 @@ mod tests {
     }
 
     #[test]
-    fn addition_assign_of_current_measuremens_work() {
+    fn addition_assign_of_current_measurements_work() {
         let mut measurement_one = CurrentMeasurement::from(12f64, Prefix::Centi, CurrentUnit::Ampere);
         let measurement_two = CurrentMeasurement::from(60f64, Prefix::Milli, CurrentUnit::Ampere);
         measurement_one += measurement_two;
@@ -140,7 +140,7 @@ mod tests {
     }
 
     #[test]
-    fn subtraction_assign_of_current_measuremens_work() {
+    fn subtraction_assign_of_current_measurements_work() {
         let mut measurement_one = CurrentMeasurement::from(12f64, Prefix::Centi, CurrentUnit::Ampere);
         let measurement_two = CurrentMeasurement::from(60f64, Prefix::Milli, CurrentUnit::Ampere);
         measurement_one -= measurement_two;

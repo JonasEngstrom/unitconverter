@@ -98,7 +98,7 @@ mod tests {
     }
 
     #[test]
-    fn addition_of_amount_of_substance_measuremens_work() {
+    fn addition_of_amount_of_substance_measurements_work() {
         let measurement_one = AmountOfSubstanceMeasurement::from(2f64, Prefix::None, AmountOfSubstanceUnit::Mole);
         let measurement_two = AmountOfSubstanceMeasurement::from(1f64, Prefix::None, AmountOfSubstanceUnit::Mole);
         let sum = measurement_one + measurement_two;
@@ -107,7 +107,7 @@ mod tests {
     }
 
     #[test]
-    fn subtraction_of_amount_of_substance_measuremens_work() {
+    fn subtraction_of_amount_of_substance_measurements_work() {
         let measurement_one = AmountOfSubstanceMeasurement::from(2f64, Prefix::None, AmountOfSubstanceUnit::Mole);
         let measurement_two = AmountOfSubstanceMeasurement::from(1f64, Prefix::None, AmountOfSubstanceUnit::Mole);
         let difference = measurement_one - measurement_two;
@@ -116,7 +116,7 @@ mod tests {
     }
 
     #[test]
-    fn addition_assign_of_amount_of_substance_measuremens_work() {
+    fn addition_assign_of_amount_of_substance_measurements_work() {
         let mut measurement_one = AmountOfSubstanceMeasurement::from(2f64, Prefix::None, AmountOfSubstanceUnit::Mole);
         let measurement_two = AmountOfSubstanceMeasurement::from(1f64, Prefix::None, AmountOfSubstanceUnit::Mole);
         measurement_one += measurement_two;
@@ -125,7 +125,7 @@ mod tests {
     }
 
     #[test]
-    fn subtraction_assign_of_amount_of_substance_measuremens_work() {
+    fn subtraction_assign_of_amount_of_substance_measurements_work() {
         let mut measurement_one = AmountOfSubstanceMeasurement::from(2f64, Prefix::None, AmountOfSubstanceUnit::Mole);
         let measurement_two = AmountOfSubstanceMeasurement::from(1f64, Prefix::None, AmountOfSubstanceUnit::Mole);
         measurement_one -= measurement_two;

@@ -151,7 +151,7 @@ mod tests {
     }
 
     #[test]
-    fn addition_of_length_measuremens_work() {
+    fn addition_of_length_measurements_work() {
         let measurement_one = LengthMeasurement::from(12f64, Prefix::Centi, LengthUnit::Meter);
         let measurement_two = LengthMeasurement::from(60f64, Prefix::Milli, LengthUnit::Meter);
         let sum = measurement_one + measurement_two;
@@ -160,7 +160,7 @@ mod tests {
     }
 
     #[test]
-    fn subtraction_of_length_measuremens_work() {
+    fn subtraction_of_length_measurements_work() {
         let measurement_one = LengthMeasurement::from(12f64, Prefix::Centi, LengthUnit::Meter);
         let measurement_two = LengthMeasurement::from(60f64, Prefix::Milli, LengthUnit::Meter);
         let difference = measurement_one - measurement_two;
@@ -169,7 +169,7 @@ mod tests {
     }
 
     #[test]
-    fn addition_assign_of_length_measuremens_work() {
+    fn addition_assign_of_length_measurements_work() {
         let mut measurement_one = LengthMeasurement::from(12f64, Prefix::Centi, LengthUnit::Meter);
         let measurement_two = LengthMeasurement::from(60f64, Prefix::Milli, LengthUnit::Meter);
         measurement_one += measurement_two;
@@ -178,7 +178,7 @@ mod tests {
     }
 
     #[test]
-    fn subtraction_assign_of_length_measuremens_work() {
+    fn subtraction_assign_of_length_measurements_work() {
         let mut measurement_one = LengthMeasurement::from(12f64, Prefix::Centi, LengthUnit::Meter);
         let measurement_two = LengthMeasurement::from(60f64, Prefix::Milli, LengthUnit::Meter);
         measurement_one -= measurement_two;

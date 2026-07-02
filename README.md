@@ -29,9 +29,18 @@ The base unit of length used in the `unitconverter` crate is meters.
 - Mile
 - Yard
 
+### Luminous Intensity
+
+The base unit of luminous intensity used in the `unitconverter` crate is candela.
+
+- Candela
+
 ### Mass
 
-The base unit of mass used in the `unitconverter` crate is kilograms. Note that conversion to and from kilograms still necessitates the use of a prefix, for consistency with how the rest of the crate is used. 
+The base unit of mass used in the `unitconverter` crate is kilograms.
+
+> [!NOTE]
+> The conversion to and from kilograms still necessitates the use of a prefix, for consistency with how the rest of the crate is used. 
 
 - Gram
 - Pound
