@@ -18,3 +18,12 @@ The base unit of temperature used in the `unitconverter` crate is kelvin.
 - Rankine
 - Réaumur
 - Rømer
+
+### Time
+
+The base unit of time used in the `unitconverter` crate is seconds.
+
+- Day
+- Hour
+- Minute
+- Second

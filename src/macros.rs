@@ -32,7 +32,7 @@ macro_rules! impl_measurement {
         pub struct $measurement_identifier { value: f64 }
         
         impl $measurement_identifier {
-            #[doc = concat!("# Store a New `", stringify!($measurement_identifier), "`")]
+            #[doc = concat!("Stores a New `", stringify!($measurement_identifier), "`")]
             /// 
             #[doc = concat!("Store a new measurement from an `f64` value, an SI prefix, and a unit. For a general code example, see [*General Usage of Measurement Types*](#general-usage-of-measurement-types) above. For supported prefixes see the [`si-prefixes`](https://crates.io/crates/si-prefixes) crate documentation, and for supported units see the [`", stringify!($unit_type), "`](", stringify!($unit_type), ") documentation page.")]
             /// 
@@ -43,9 +43,9 @@ macro_rules! impl_measurement {
                 }
             }
     
-            #[doc = concat!("# Output a Stored `", stringify!($measurement_identifier), "`")]
+            #[doc = concat!("Output a Stored `", stringify!($measurement_identifier), "`")]
             /// 
-            #[doc = concat!("Output a stored measurement in a desired unit with an SI prefix. For a general code example, see [*General Usage of Measurement Types*](#general-usage-of-measurement-types) above. For supported prefixes see the [`si-prefixes`](https://crates.io/crates/si-prefixes) crate documentation, and for supported units see the [`", stringify!($unit_type), "`](", stringify!($unit_type), ") documentation page.")]
+            #[doc = concat!("Outputs a stored measurement in a desired unit with an SI prefix. For a general code example, see [*General Usage of Measurement Types*](#general-usage-of-measurement-types) above. For supported prefixes see the [`si-prefixes`](https://crates.io/crates/si-prefixes) crate documentation, and for supported units see the [`", stringify!($unit_type), "`](", stringify!($unit_type), ") documentation page.")]
             /// 
             /// For more information on how to use the crate, including code examples, see [the crate documentation root page](crate) or the `README.md` file in [the GitHub repo](https://github.com/JonasEngstrom/unitconverter).
             pub fn to(&self, prefix: Prefix, unit: $unit_type) -> f64 {

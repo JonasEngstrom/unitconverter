@@ -1,8 +1,8 @@
 //! # Units and Operations Pertaining to Time
+//! 
+//! The base unit used to store temperature in the `unitconverter` crate is seconds.
 
-use si_prefixes::Prefix;
-
-use crate::macros::impl_add_and_subtract;
+use crate::macros::*;
 
 /// # Units of Time
 /// 
@@ -12,147 +12,93 @@ use crate::macros::impl_add_and_subtract;
 /// 
 /// 1. Bureau International des Poids et Mesures. (2025). *Le Système international d’unités/The International System of Units*. 9th edition. [https://doi.org/10.59161/AUEZ1291](https://doi.org/10.59161/AUEZ1291)
 pub enum TimeUnit {
-    /// Defined by taking the unperturbed ground-state hyperfine transition frequency of the cesium-133 atom, to be 9,192,631,770 Hz. Hertz being equal to s<sup>−1</sup>. Represented by the symbol s.<sup>1</sup>
-    Second,
-    /// Defined as 60 seconds. Represented by the symbol min.<sup>1</sup>
-    Minute,
-    /// Defined as 3,600 seconds. Equal to 60 minutes. Represented by the symbol h.<sup>1</sup>
-    Hour,
     /// Defined as 86,400 seconds. Equal to 24 hours. Represented by the symbol d.<sup>1</sup>
     Day,
+    /// Defined as 3,600 seconds. Equal to 60 minutes. Represented by the symbol h.<sup>1</sup>
+    Hour,
+    /// Defined as 60 seconds. Represented by the symbol min.<sup>1</sup>
+    Minute,
+    /// Defined by taking the unperturbed ground-state hyperfine transition frequency of the cesium-133 atom, to be 9,192,631,770 Hz. Hertz being equal to s<sup>−1</sup>. Represented by the symbol s.<sup>1</sup>
+    Second,
 }
 
 impl TimeUnit {
-    /// Returns the factor fo converting a unit into seconds.
-    /// 
-    /// ```
-    /// use unitconverter::time::TimeUnit;
-    /// 
-    /// let hour = TimeUnit::Hour;
-    /// 
-    /// assert_eq!(hour.factor(), 3_600f64);
-    /// ```
-    pub fn factor(&self) -> f64 {
-        match self {
-            TimeUnit::Second => 1f64,
-            TimeUnit::Minute => 60f64,
-            TimeUnit::Hour => 3_600f64,
-            TimeUnit::Day => 86_400f64,
+    doc_to_base_unit! {
+        fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+            match self {
+                TimeUnit::Second => |x| 1f64 * x,
+                TimeUnit::Minute => |x| 60f64 * x,
+                TimeUnit::Hour => |x| 3_600f64 * x,
+                TimeUnit::Day => |x| 86_400f64 * x,
+            }
         }
     }
 
-    /// Returns the name of a unit in singular.
-    /// 
-    /// ```
-    /// use unitconverter::time::TimeUnit;
-    /// 
-    /// let minute = TimeUnit::Minute;
-    /// 
-    /// assert_eq!(minute.name_singular(), "minute");
-    /// ```
-    pub fn name_singular(&self) -> &str {
-        match self {
-            TimeUnit::Second => "second",
-            TimeUnit::Minute => "minute",
-            TimeUnit::Hour => "hour",
-            TimeUnit::Day => "day",
+    doc_from_base_unit! {
+        fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+            match self {
+                TimeUnit::Second => |x| x / 1f64,
+                TimeUnit::Minute => |x| x / 60f64,
+                TimeUnit::Hour => |x| x / 3_600f64,
+                TimeUnit::Day => |x| x / 86_400f64,
+            }
         }
     }
 
-    /// Returns the name of a unit in plural.
-    /// 
-    /// ```
-    /// use unitconverter::time::TimeUnit;
-    /// 
-    /// let day = TimeUnit::Day;
-    /// 
-    /// assert_eq!(day.name_plural(), "days");
-    /// ```
-    pub fn name_plural(&self) -> &str {
-        match self {
-            TimeUnit::Second => "seconds",
-            TimeUnit::Minute => "minutes",
-            TimeUnit::Hour => "hours",
-            TimeUnit::Day => "days",
+    doc_name_singular! {
+        pub fn name_singular(&self) -> &str {
+            match self {
+                TimeUnit::Second => "second",
+                TimeUnit::Minute => "minute",
+                TimeUnit::Hour => "hour",
+                TimeUnit::Day => "day",
+            }
         }
     }
 
-    /// Returns the symbol of a unit.
-    /// 
-    /// ```
-    /// use unitconverter::time::TimeUnit;
-    /// 
-    /// let second = TimeUnit::Second;
-    /// 
-    /// assert_eq!(second.symbol(), "s");
-    /// ```
-    pub fn symbol(&self) -> &str {
-        match self {
-            TimeUnit::Second => "s",
-            TimeUnit::Minute => "min",
-            TimeUnit::Hour => "h",
-            TimeUnit::Day => "d",
+    doc_name_plural! {
+        pub fn name_plural(&self) -> &str {
+            match self {
+                TimeUnit::Second => "seconds",
+                TimeUnit::Minute => "minutes",
+                TimeUnit::Hour => "hours",
+                TimeUnit::Day => "days",
+            }
+        }
+    }
+
+    doc_symbol! {
+        pub fn symbol(&self) -> &str {
+            match self {
+                TimeUnit::Second => "s",
+                TimeUnit::Minute => "min",
+                TimeUnit::Hour => "h",
+                TimeUnit::Day => "d",
+            }
         }
     }
 }
 
-/// # Measurement of Time
-/// 
-/// A measurement of time. Stored internally as seconds, but output as any unit the user desires.
-pub struct TimeMeasurement { value: f64 }
-
-impl TimeMeasurement {
-    /// # Store a New Measurement of Time
-    /// 
-    /// Measurements are stored using a value, a prefix, and a unit, as illustrated in the following example:
-    /// 
-    /// ```
-    /// use unitconverter::time::{ TimeUnit, TimeMeasurement };
-    /// use si_prefixes::Prefix;
-    /// 
-    /// // Desired input format.
-    /// let one_hour = TimeMeasurement::from(1f64, Prefix::None, TimeUnit::Hour);
-    /// 
-    /// // Desired output format.
-    /// assert_eq!(one_hour.to(Prefix::None, TimeUnit::Second), 3_600f64);
-    /// ```
-    pub fn from(value: f64, prefix: Prefix, unit: TimeUnit) -> Self {
-        Self {
-            value: value * Prefix::conversion_constant(prefix, Prefix::None) * unit.factor()
-        }
-    }
-
-    /// # Convert a Previously Stored Measurement of Time
-    /// 
-    /// Previously stored `TimeMeasurement`s are converted using a prefix and a unit, as illustrated in the following example:
-    /// 
-    /// ```
-    /// use unitconverter::time::{ TimeUnit, TimeMeasurement };
-    /// use si_prefixes::Prefix;
-    /// 
-    /// // Desired input format.
-    /// let one_hour = TimeMeasurement::from(1f64, Prefix::None, TimeUnit::Hour);
-    /// 
-    /// // Desired output format.
-    /// assert_eq!(one_hour.to(Prefix::None, TimeUnit::Second), 3_600f64);
-    /// ```
-    pub fn to(&self, prefix: Prefix, unit: TimeUnit) -> f64 {
-        self.value * Prefix::conversion_constant(Prefix::None, prefix) / unit.factor()
-    }
-}
-
-impl_add_and_subtract!(TimeMeasurement);
+impl_measurement!(TimeMeasurement, TimeUnit);
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn factors_are_correct() {
-        assert_eq!(TimeUnit::Second.factor(), 1f64);
-        assert_eq!(TimeUnit::Minute.factor(), 60f64);
-        assert_eq!(TimeUnit::Hour.factor(), 3_600f64);
-        assert_eq!(TimeUnit::Day.factor(), 86_400f64);
+    fn to_base_units_are_correct() {
+        assert_eq!(TimeUnit::Second.to_base_unit()(1f64), 1f64);
+        assert_eq!(TimeUnit::Minute.to_base_unit()(1f64), 60f64);
+        assert_eq!(TimeUnit::Hour.to_base_unit()(1f64), 3_600f64);
+        assert_eq!(TimeUnit::Day.to_base_unit()(1f64), 86_400f64);
+    }
+
+    #[test]
+    fn from_base_units_are_correct() {
+        assert_eq!(TimeUnit::Second.from_base_unit()(1f64), 1f64);
+        assert_eq!(TimeUnit::Minute.from_base_unit()(60f64), 1f64);
+        assert_eq!(TimeUnit::Hour.from_base_unit()(3_600f64), 1f64);
+        assert_eq!(TimeUnit::Day.from_base_unit()(86_400f64), 1f64);
     }
 
     #[test]
