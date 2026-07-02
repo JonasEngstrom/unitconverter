@@ -7,6 +7,12 @@ Unit converter is a crate for converting between different units of measurement.
 
 ## Supported Units
 
+### Electric Current
+
+The base unit of electric current used in the `unitconverter` crate is amperes.
+
+- Ampere
+
 ### Temperature
 
 The base unit of temperature used in the `unitconverter` crate is kelvin.

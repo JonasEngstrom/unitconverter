@@ -26,7 +26,7 @@ impl TimeUnit {
     doc_to_base_unit! {
         fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
             match self {
-                TimeUnit::Second => |x| 1f64 * x,
+                TimeUnit::Second => |x| x,
                 TimeUnit::Minute => |x| 60f64 * x,
                 TimeUnit::Hour => |x| 3_600f64 * x,
                 TimeUnit::Day => |x| 86_400f64 * x,
@@ -37,7 +37,7 @@ impl TimeUnit {
     doc_from_base_unit! {
         fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
             match self {
-                TimeUnit::Second => |x| x / 1f64,
+                TimeUnit::Second => |x| x,
                 TimeUnit::Minute => |x| x / 60f64,
                 TimeUnit::Hour => |x| x / 3_600f64,
                 TimeUnit::Day => |x| x / 86_400f64,

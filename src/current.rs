@@ -1,8 +1,8 @@
 //! # Units and Operations Pertaining to Electric Current
+//! 
+//! The base unit used to store electric current in the `unitconverter` crate is amperes.
 
-use si_prefixes::Prefix;
-
-use crate::macros::impl_add_and_subtract;
+use crate::macros::*;
 
 /// # Units of Electric Current
 /// 
@@ -32,106 +32,61 @@ impl CurrentUnit {
         }
     }
 
-    /// Returns the name of a unit in singular.
-    /// 
-    /// ```
-    /// use unitconverter::current::CurrentUnit;
-    /// 
-    /// let ampere = CurrentUnit::Ampere;
-    /// 
-    /// assert_eq!(ampere.name_singular(), "ampere");
-    /// ```
-    pub fn name_singular(&self) -> &str {
-        match self {
-            CurrentUnit::Ampere => "ampere",
+    doc_to_base_unit! {
+        fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+            match self {
+                CurrentUnit::Ampere => |x| x,
+            }
         }
     }
 
-    /// Returns the name of a unit in plural.
-    /// 
-    /// ```
-    /// use unitconverter::current::CurrentUnit;
-    /// 
-    /// let ampere = CurrentUnit::Ampere;
-    /// 
-    /// assert_eq!(ampere.name_plural(), "amperes");
-    /// ```
-    pub fn name_plural(&self) -> &str {
-        match self {
-            CurrentUnit::Ampere => "amperes",
+    doc_from_base_unit! {
+        fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+            match self {
+                CurrentUnit::Ampere => |x| x,
+            }
         }
     }
 
-    /// Returns the symbol of a unit.
-    /// 
-    /// ```
-    /// use unitconverter::current::CurrentUnit;
-    /// 
-    /// let ampere = CurrentUnit::Ampere;
-    /// 
-    /// assert_eq!(ampere.symbol(), "A");
-    /// ```
-    pub fn symbol(&self) -> &str {
-        match self {
-            CurrentUnit::Ampere => "A",
+    doc_name_singular! {
+        pub fn name_singular(&self) -> &str {
+            match self {
+                CurrentUnit::Ampere => "ampere",
+            }
+        }
+    }
+
+    doc_name_plural! {
+        pub fn name_plural(&self) -> &str {
+            match self {
+                CurrentUnit::Ampere => "amperes",
+            }
+        }
+    }
+
+    doc_symbol! {
+        pub fn symbol(&self) -> &str {
+            match self {
+                CurrentUnit::Ampere => "A",
+            }
         }
     }
 }
 
-/// # Measurement of Electric Current
-/// 
-/// A measurement of electric current. Stored internally as amperes, but output as any unit the user desires.
-pub struct CurrentMeasurement { value: f64 }
-
-impl CurrentMeasurement {
-    /// # Store a New Measurement of Electric Current
-    /// 
-    /// Measurements are stored using a value, a prefix, and a unit, as illustrated in the following examples:
-    /// 
-    /// ```
-    /// use unitconverter::current::{ CurrentUnit, CurrentMeasurement };
-    /// use si_prefixes::Prefix;
-    /// 
-    /// // Desired input format.
-    /// let kiloampere = CurrentMeasurement::from(1f64, Prefix::Kilo, CurrentUnit::Ampere);
-    /// 
-    /// // Desired output format.
-    /// assert_eq!(kiloampere.to(Prefix::None, CurrentUnit::Ampere), 1_000f64);
-    /// ```
-    pub fn from(value: f64, prefix: Prefix, unit: CurrentUnit) -> Self {
-        Self {
-            value: value * Prefix::conversion_constant(prefix, Prefix::None) * unit.factor()
-        }
-    }
-
-    /// # Convert a Previously Stored Measurement of Electric Current
-    /// 
-    /// Measurements are stored using a value, a prefix, and a unit, as illustrated in the following examples:
-    /// 
-    /// ```
-    /// use unitconverter::current::{ CurrentUnit, CurrentMeasurement };
-    /// use si_prefixes::Prefix;
-    /// 
-    /// // Desired input format.
-    /// let kiloampere = CurrentMeasurement::from(1f64, Prefix::Kilo, CurrentUnit::Ampere);
-    /// 
-    /// // Desired output format.
-    /// assert_eq!(kiloampere.to(Prefix::None, CurrentUnit::Ampere), 1_000f64);
-    /// ```
-    pub fn to(&self, prefix: Prefix, unit: CurrentUnit) -> f64 {
-        self.value * Prefix::conversion_constant(Prefix::None, prefix) / unit.factor()
-    }
-}
-
-impl_add_and_subtract!(CurrentMeasurement);
+impl_measurement!(CurrentMeasurement, CurrentUnit);
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn factors_are_correct() {
-        assert_eq!(CurrentUnit::Ampere.factor(), 1f64);
+    fn to_base_units_are_correct() {
+        assert_eq!(CurrentUnit::Ampere.to_base_unit()(1f64), 1f64);
+    }
+
+    #[test]
+    fn from_base_units_are_correct() {
+        assert_eq!(CurrentUnit::Ampere.from_base_unit()(1f64), 1f64);
     }
 
     #[test]
