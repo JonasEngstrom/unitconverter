@@ -18,22 +18,22 @@ use crate::macros::*;
 /// 6. Grigull, U. Wärme- und Stoffübertragung **18**, 195-199 (1984). *Newton’s temperature scale and the law of cooling* [https://doi.org/10.1007/BF01007129](https://doi.org/10.1007/BF01007129)
 /// 7. [https://en.wikipedia.org/wiki/Delisle_scale](https://en.wikipedia.org/wiki/Delisle_scale)
 pub enum TemperatureUnit {
-    /// Defined by taking the fixed numerical value of the Boltzmann constant to be 1.380649 × 10<sup>-23</sup> when expressed in J/K. Represented by the symbol K.<sup>1</sup>
-    Kelvin,
     /// Defined as the T - 273.15, where T is the temperature in kelvin. Represented by the symbol °C.<sup>1</sup>
     Celsius,
+    /// Defined as (373.15 - T) × 3 / 2, where T is the temperature in kelvin. Represented by the symbol °De.<sup>7</sup>
+    Delisle,
     /// Defined as (T - 273.15) × 1.8 + 32, where T is the temperature in kelvin. Represented by the symbol °F.<sup>2</sup>
     Fahrenheit,
+    /// Defined by taking the fixed numerical value of the Boltzmann constant to be 1.380649 × 10<sup>-23</sup> when expressed in J/K. Represented by the symbol K.<sup>1</sup>
+    Kelvin,
+    /// Although no definitive conversion factor can be determined based on Newton’s own notes, this crate uses approximation of (T - 273.15) × 0.33, where T is the temperature in kelvin. Represented by the symbol °N.<sup>6</sup>
+    Newton,
     /// Defined as T × 1.8, where T is the temperature in kelvin.<sup>3</sup> Often represented by the symbol °R, but represented by °Ra in this crate, to distinguish it from degrees in the other temperature scales starting with R.
     Rankine,
     /// Defined as (T - 273.15) × 0.8, where T is the temperature in kelvin.<sup>4</sup>  Often represented by the symbol °R, but represented by °Ré in this crate, to distinguish it from degrees in the other temperature scales starting with R.
     Réaumur,
     /// Estimated to be (T - 273.15) × 0.525 + 7.5, where T is the temperature i Kelvin.<sup>5</sup> Someteimes represented by the symbol °R, but represented by °Rø in this crate, to distinguish it from degrees in the other temperature scales starting with R.
     Rømer,
-    /// Although no definitive conversion factor can be determined based on Newton’s own notes, this crate uses approximation of (T - 273.15) × 0.33, where T is the temperature in kelvin. Represented by the symbol °N.<sup>6</sup>
-    Newton,
-    /// Defined as (373.15 - T) × 3 / 2, where T is the temperature in kelvin. Represented by the symbol °De.<sup>7</sup>
-    Delisle,
 }
 
 impl TemperatureUnit {

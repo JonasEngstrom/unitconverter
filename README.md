@@ -4,3 +4,17 @@
 # Unit Converter
 
 Unit converter is a crate for converting between different units of measurement.
+
+## Supported Units
+
+### Temperature
+
+The base unit of temperature used in the `unitconverter` crate is kelvin.
+
+- Celsius
+- Delisle
+- Fahrenheit
+- Kelvin
+- Rankine
+- Réaumur
+- Rømer
