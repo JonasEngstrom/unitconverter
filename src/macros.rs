@@ -93,53 +93,6 @@ macro_rules! impl_measurement {
 
 pub(crate) use impl_measurement;
 
-/// # Implement Addition and Subtraction for Measurement Types
-/// 
-/// Implements `+`, `-`, `+=`, and `-=` operators for measurement types defined in the crate. For internal use.
-macro_rules! impl_add_and_subtract {
-    ($type: ty) => {
-        use std::ops::{ Add, Sub, AddAssign, SubAssign };
-        
-        impl Add for $type {
-            type Output = Self;
-
-            fn add(self, other: Self) -> Self {
-                Self {
-                    value: self.value + other.value,
-                }
-            }
-        }
-
-        impl Sub for $type {
-            type Output = Self;
-
-            fn sub(self, other: Self) -> Self {
-                Self {
-                    value: self.value - other.value,
-                }
-            }
-        }
-
-        impl AddAssign for $type {
-            fn add_assign(&mut self, other: Self) {
-                *self = Self {
-                    value: self.value + other.value,
-                };
-            }
-        }
-
-        impl SubAssign for $type {
-            fn sub_assign(&mut self, other: Self) {
-                *self = Self {
-                    value: self.value - other.value,
-                };
-            }
-        }
-    }
-}
-
-pub(crate) use impl_add_and_subtract;
-
 macro_rules! doc_to_base_unit {
     ($to_base_unit: item) => {
         /// Returns a closure converting a unit into the base unit of the quantity.

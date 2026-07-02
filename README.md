@@ -23,6 +23,13 @@ The base unit of length used in the `unitconverter` crate is meters.
 - Mile
 - Yard
 
+### Mass
+
+The base unit of mass used in the `unitconverter` crate is kilograms. Note that conversion to and from kilograms still necessitates the use of a prefix, for consistency witht how the rest of the crate is used. 
+
+- Gram
+- Pound
+
 ### Temperature
 
 The base unit of temperature used in the `unitconverter` crate is kelvin.

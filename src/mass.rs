@@ -1,8 +1,8 @@
 //! # Units and Operations Pertaining to Mass
+//! 
+//! The base unit used to store mass in the `unitconverter` crate is kilograms.
 
-use si_prefixes::Prefix;
-
-use crate::macros::impl_add_and_subtract;
+use crate::macros::*;
 
 /// # Units of Mass
 /// 
@@ -21,126 +21,68 @@ pub enum MassUnit {
 }
 
 impl MassUnit {
-    /// Returns the factor for converting a unit into kilograms.
-    /// 
-    /// ```
-    /// use unitconverter::mass::MassUnit;
-    /// 
-    /// let pound = MassUnit::Pound;
-    /// 
-    /// assert_eq!(pound.factor(), 0.45359237f64);
-    /// ```
-    pub fn factor(&self) -> f64 {
-        match self {
-            MassUnit::Gram => 0.001f64,
-            MassUnit::Pound => 0.453_592_37f64,
+    doc_to_base_unit! {
+        fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+            match self {
+                MassUnit::Gram => |x| 0.001f64 * x,
+                MassUnit::Pound => |x| 0.453_592_37f64 * x,
+            }
         }
     }
 
-    /// Returns the name of a unit in singular.
-    /// 
-    /// ```
-    /// use unitconverter::mass::MassUnit;
-    /// 
-    /// let gram = MassUnit::Gram;
-    /// 
-    /// assert_eq!(gram.name_singular(), "gram");
-    /// ```
-    pub fn name_singular(&self) -> &str {
-        match self {
-            MassUnit::Gram => "gram",
-            MassUnit::Pound => "pound",
+    doc_from_base_unit! {
+        fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+            match self {
+                MassUnit::Gram => |x| x / 0.001f64,
+                MassUnit::Pound => |x| x / 0.453_592_37f64,
+            }
         }
     }
 
-    /// Returns the name of a unit in plural.
-    /// 
-    /// ```
-    /// use unitconverter::mass::MassUnit;
-    /// 
-    /// let gram = MassUnit::Gram;
-    /// 
-    /// assert_eq!(gram.name_plural(), "grams");
-    /// ```
-    pub fn name_plural(&self) -> &str {
-        match self {
-            MassUnit::Gram => "grams",
-            MassUnit::Pound => "pounds"
+    doc_name_singular! {
+        pub fn name_singular(&self) -> &str {
+            match self {
+                MassUnit::Gram => "gram",
+                MassUnit::Pound => "pound",
+            }
         }
     }
 
-    /// Returns the symbol of a unit.
-    /// 
-    /// ```
-    /// use unitconverter::mass::MassUnit;
-    /// 
-    /// let pound = MassUnit::Pound;
-    /// 
-    /// assert_eq!(pound.symbol(), "lb");
-    /// ```
-    pub fn symbol(&self) -> &str {
-        match self {
-            MassUnit::Gram => "g",
-            MassUnit::Pound => "lb",
+    doc_name_plural! {
+        pub fn name_plural(&self) -> &str {
+            match self {
+                MassUnit::Gram => "grams",
+                MassUnit::Pound => "pounds"
+            }
+        }
+    }
+
+    doc_symbol! {
+        pub fn symbol(&self) -> &str {
+            match self {
+                MassUnit::Gram => "g",
+                MassUnit::Pound => "lb",
+            }
         }
     }
 }
 
-/// # Measurement of Mass
-/// 
-/// A measurement of mass. Stored internally as kilograms, but output as any unit the user desires.
-pub struct MassMeasurement { value: f64 }
-
-impl MassMeasurement {
-    /// # Store a New Measurement of Mass
-    /// 
-    /// Measurements are stored using a value, a prefix, and a unit, as illustrated in the following examples:
-    /// 
-    /// ```
-    /// use unitconverter::mass::{ MassUnit, MassMeasurement };
-    /// use si_prefixes::Prefix;
-    /// 
-    /// // Desired input format.
-    /// let one_pound = MassMeasurement::from(1f64, Prefix::None, MassUnit::Pound);
-    /// 
-    /// // Desired output format.
-    /// assert_eq!(one_pound.to(Prefix::Kilo, MassUnit::Gram), 0.453_592_37f64);
-    /// ```
-    pub fn from(value: f64, prefix: Prefix, unit: MassUnit) -> Self {
-        Self {
-            value: value * Prefix::conversion_constant(prefix, Prefix::None) * unit.factor()
-        }
-    }
-
-    /// # Convert a Previously Stored Measurement of Mass
-    /// 
-    /// Prefiously stored `MassMeasurement`s are converted using a prefix and a unit, as illustrated in the following examples:
-    /// 
-    /// ```
-    /// use unitconverter::mass::{ MassUnit, MassMeasurement };
-    /// use si_prefixes::Prefix;
-    /// 
-    /// // Desired input format.
-    /// let one_pound = MassMeasurement::from(1f64, Prefix::None, MassUnit::Pound);
-    /// 
-    /// // Desired output format.
-    /// assert_eq!(one_pound.to(Prefix::Kilo, MassUnit::Gram), 0.453_592_37f64);
-    /// ```
-    pub fn to(&self, prefix: Prefix, unit: MassUnit) -> f64 {
-        self.value * Prefix::conversion_constant(Prefix::None, prefix) / unit.factor()
-    }
-}
-
-impl_add_and_subtract!(MassMeasurement);
+impl_measurement!(MassMeasurement, MassUnit);
 
 #[cfg(test)]
 mod tests {
     use super::*;
     
     #[test]
-    fn factors_are_correct() {
-        assert_eq!(MassUnit::Gram.factor(), 0.001f64);
-        assert_eq!(MassUnit::Pound.factor(), 0.453_592_37f64);
+    fn to_base_units_are_correct() {
+        assert_eq!(MassUnit::Gram.to_base_unit()(1f64), 0.001f64);
+        assert_eq!(MassUnit::Pound.to_base_unit()(1f64), 0.453_592_37f64);
+    }
+
+    #[test]
+    fn from_base_units_are_correct() {
+        assert_eq!(MassUnit::Gram.from_base_unit()(0.001f64), 1f64);
+        assert_eq!(MassUnit::Pound.from_base_unit()(0.453_592_37f64), 1f64);
     }
 
     #[test]
