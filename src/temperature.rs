@@ -137,6 +137,7 @@ mod tests {
         assert_eq!(TemperatureUnit::Réaumur.name_singular(), "degree Réaumur");
         assert_eq!(TemperatureUnit::Rømer.name_singular(), "degree Rømer");
         assert_eq!(TemperatureUnit::Delisle.name_singular(), "degree Delisle");
+        assert_eq!(TemperatureUnit::Newton.name_singular(), "degree Newton");
     }
 
     #[test]
@@ -148,6 +149,7 @@ mod tests {
         assert_eq!(TemperatureUnit::Réaumur.name_plural(), "degrees Réaumur");
         assert_eq!(TemperatureUnit::Rømer.name_plural(), "degrees Rømer");
         assert_eq!(TemperatureUnit::Delisle.name_plural(), "degrees Delisle");
+        assert_eq!(TemperatureUnit::Newton.name_plural(), "degrees Newton");
     }
 
     #[test]
@@ -159,6 +161,7 @@ mod tests {
         assert_eq!(TemperatureUnit::Réaumur.symbol(), "°Ré");
         assert_eq!(TemperatureUnit::Rømer.symbol(), "°Rø");
         assert_eq!(TemperatureUnit::Delisle.symbol(), "°De");
+        assert_eq!(TemperatureUnit::Newton.symbol(), "°N");
     }
 
     #[test]
@@ -250,7 +253,7 @@ mod tests {
     fn conversion_from_newton_works() {
         let one_hundred_newton = TemperatureMeasurement::from(1f64, Prefix::Hecto, TemperatureUnit::Newton);
 
-        assert_almost_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Celsius), 100000f64 /33f64);
+        assert_almost_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Celsius), 100000f64 / 33f64);
         assert_almost_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Fahrenheit), (100f64 * 60f64 / 11f64 + 32f64) * 10f64);
         assert_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Kelvin), (10000f64 /33f64 + 273.15f64) * 10f64);
         assert_almost_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Rankine), ((100f64 * 60f64 / 11f64) + 491.67f64) * 10f64);
@@ -258,6 +261,20 @@ mod tests {
         assert_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Réaumur), 80000f64 / 33f64);
         assert_almost_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Rømer), (10000f64 / 33f64 * 21f64 / 40f64 + 7.5f64) * 10f64);
         assert_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Delisle), 1500f64 - 150000f64 / 33f64);
+    }
+
+    #[test]
+    fn conversion_from_delisle_works() {
+        let one_hundred_delisle = TemperatureMeasurement::from(1f64, Prefix::Hecto, TemperatureUnit::Delisle);
+
+        assert_almost_eq!(one_hundred_delisle.to(Prefix::Deci, TemperatureUnit::Celsius), 1000f64 / 3f64);
+        assert_almost_eq!(one_hundred_delisle.to(Prefix::Deci, TemperatureUnit::Fahrenheit), (212f64 - 600f64 / 5f64) * 10f64);
+        assert_almost_eq!(one_hundred_delisle.to(Prefix::Deci, TemperatureUnit::Kelvin), (373.15f64 - 200f64 / 3f64) * 10f64);
+        assert_almost_eq!(one_hundred_delisle.to(Prefix::Deci, TemperatureUnit::Rankine), (671.67f64 - 600f64 / 5f64) * 10f64);
+        // assert_eq!(one_hundred_delisle.to(Prefix::Deci, TemperatureUnit::Newton), 1000f64);
+        // assert_eq!(one_hundred_delisle.to(Prefix::Deci, TemperatureUnit::Réaumur), 80000f64 / 33f64);
+        // assert_almost_eq!(one_hundred_delisle.to(Prefix::Deci, TemperatureUnit::Rømer), (10000f64 / 33f64 * 21f64 / 40f64 + 7.5f64) * 10f64);
+        // assert_eq!(one_hundred_delisle.to(Prefix::Deci, TemperatureUnit::Delisle), 1500f64 - 150000f64 / 33f64);
     }
 
     #[test]

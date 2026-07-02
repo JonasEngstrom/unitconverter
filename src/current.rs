@@ -17,21 +17,6 @@ pub enum CurrentUnit {
 }
 
 impl CurrentUnit {
-    /// Returns the factor for converting a unit into amperes.
-    /// 
-    /// ```
-    /// use unitconverter::current::CurrentUnit;
-    /// 
-    /// let ampere = CurrentUnit::Ampere;
-    /// 
-    /// assert_eq!(ampere.factor(), 1f64);
-    /// ```
-    pub fn factor(&self) -> f64 {
-        match self {
-            CurrentUnit::Ampere => 1f64,
-        }
-    }
-
     doc_to_base_unit! {
         fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
             match self {
