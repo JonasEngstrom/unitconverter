@@ -13,6 +13,16 @@ The base unit of electric current used in the `unitconverter` crate is amperes.
 
 - Ampere
 
+### Length
+
+The base unit of length used in the `unitconverter` crate is meters.
+
+- Foot
+- Inch
+- Meter
+- Mile
+- Yard
+
 ### Temperature
 
 The base unit of temperature used in the `unitconverter` crate is kelvin.
