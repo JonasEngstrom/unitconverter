@@ -1,8 +1,8 @@
 //! # Units and Operations Pertaining to Temperature
 
-use si_prefixes::Prefix;
+// use si_prefixes::Prefix;
 
-use crate::macros::impl_add_and_subtract;
+use crate::macros::impl_measurement;
 
 /// # Units of Temperature
 /// 
@@ -16,7 +16,7 @@ use crate::macros::impl_add_and_subtract;
 /// 4. Hofstad, K. (2025). *Réaumurskalaen* in *Store norske leksikon* [https://snl.no/r%C3%A9aumurskalaen](https://snl.no/r%C3%A9aumurskalaen)
 /// 5. Meyer, K. Nature **82**, 296–298 (1910). *Ole Römer and the Thermometer* [https://doi.org/10.1038/082296a0](https://doi.org/10.1038/082296a0)
 /// 6. Grigull, U. Wärme- und Stoffübertragung **18**, 195-199 (1984). *Newton’s temperature scale and the law of cooling* [https://doi.org/10.1007/BF01007129](https://doi.org/10.1007/BF01007129)
-/// 7. https://en.wikipedia.org/wiki/Delisle_scale
+/// 7. [https://en.wikipedia.org/wiki/Delisle_scale](https://en.wikipedia.org/wiki/Delisle_scale)
 pub enum TemperatureUnit {
     /// Defined by taking the fixed numerical value of the Boltzmann constant to be 1.380649 × 10<sup>-23</sup> when expressed in J/K. Represented by the symbol K.<sup>1</sup>
     Kelvin,
@@ -132,50 +132,52 @@ impl TemperatureUnit {
     }
 }
 
-/// # Measurement of Temperature
-/// 
-/// A measurement of temperature. Stored internally as kelvin, but output as any unit the user desires.
-pub struct TemperatureMeasurement { value: f64 }
+// /// # Measurement of Temperature
+// /// 
+// /// A measurement of temperature. Stored internally as kelvin, but output as any unit the user desires.
+// pub struct TemperatureMeasurement { value: f64 }
 
-impl TemperatureMeasurement {
-    /// # Store a New Measurement of Length
-    /// 
-    /// Measurements are stored using av value, a prefix, and a unit.
-    /// 
-    /// ```
-    /// use unitconverter::temperature::{ TemperatureUnit, TemperatureMeasurement };
-    /// use si_prefixes::Prefix;
-    /// 
-    /// // Desired input format.
-    /// let one_hundred_celsius = TemperatureMeasurement::from(1f64, Prefix::Hecto, TemperatureUnit::Celsius);
-    /// 
-    /// assert_eq!(one_hundred_celsius.to(Prefix::None, TemperatureUnit::Kelvin), 373.15f64);
-    /// ```
-    pub fn from(value: f64, prefix: Prefix, unit: TemperatureUnit) -> Self {
-        Self {
-            value: unit.to_base_unit()(Prefix::conversion_constant(prefix, Prefix::None) * value)
-        }
-    }
+// impl TemperatureMeasurement {
+//     /// # Store a New Measurement of Length
+//     /// 
+//     /// Measurements are stored using av value, a prefix, and a unit.
+//     /// 
+//     /// ```
+//     /// use unitconverter::temperature::{ TemperatureUnit, TemperatureMeasurement };
+//     /// use si_prefixes::Prefix;
+//     /// 
+//     /// // Desired input format.
+//     /// let one_hundred_celsius = TemperatureMeasurement::from(1f64, Prefix::Hecto, TemperatureUnit::Celsius);
+//     /// 
+//     /// assert_eq!(one_hundred_celsius.to(Prefix::None, TemperatureUnit::Kelvin), 373.15f64);
+//     /// ```
+//     pub fn from(value: f64, prefix: Prefix, unit: TemperatureUnit) -> Self {
+//         Self {
+//             value: unit.to_base_unit()(Prefix::conversion_constant(prefix, Prefix::None) * value)
+//         }
+//     }
 
-    /// # Convert a Previously Stored Measurement of Length
-    /// 
-    /// Previously stored `TemperatureMeasurement`s are convdrted using a prefix and a unit.
-    /// 
-    /// ```
-    /// use unitconverter::temperature::{ TemperatureUnit, TemperatureMeasurement };
-    /// use si_prefixes::Prefix;
-    /// 
-    /// // Desired input format.
-    /// let one_hundred_celsius = TemperatureMeasurement::from(1f64, Prefix::Hecto, TemperatureUnit::Celsius);
-    /// 
-    /// assert_eq!(one_hundred_celsius.to(Prefix::None, TemperatureUnit::Kelvin), 373.15f64);
-    /// ```
-    pub fn to(&self, prefix: Prefix, unit: TemperatureUnit) -> f64 {
-        Prefix::conversion_constant(Prefix::None, prefix) * unit.from_base_unit()(self.value)
-    }
-}
+//     /// # Convert a Previously Stored Measurement of Length
+//     /// 
+//     /// Previously stored `TemperatureMeasurement`s are convdrted using a prefix and a unit.
+//     /// 
+//     /// ```
+//     /// use unitconverter::temperature::{ TemperatureUnit, TemperatureMeasurement };
+//     /// use si_prefixes::Prefix;
+//     /// 
+//     /// // Desired input format.
+//     /// let one_hundred_celsius = TemperatureMeasurement::from(1f64, Prefix::Hecto, TemperatureUnit::Celsius);
+//     /// 
+//     /// assert_eq!(one_hundred_celsius.to(Prefix::None, TemperatureUnit::Kelvin), 373.15f64);
+//     /// ```
+//     pub fn to(&self, prefix: Prefix, unit: TemperatureUnit) -> f64 {
+//         Prefix::conversion_constant(Prefix::None, prefix) * unit.from_base_unit()(self.value)
+//     }
+// }
 
-impl_add_and_subtract!(TemperatureMeasurement);
+impl_measurement!(TemperatureMeasurement, TemperatureUnit);
+
+// impl_add_and_subtract!(TemperatureMeasurement);
 
 #[cfg(test)]
 mod tests {
