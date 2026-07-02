@@ -1,8 +1,8 @@
 //! # Units and Operations Pertaining to Temperature
+//! 
+//! The base unit used to store temperature in the `unitconverter` crate is kelvin.
 
-// use si_prefixes::Prefix;
-
-use crate::macros::impl_measurement;
+use crate::macros::*;
 
 /// # Units of Temperature
 /// 
@@ -37,147 +37,83 @@ pub enum TemperatureUnit {
 }
 
 impl TemperatureUnit {
-    /// Returns a closure converting a unit into the base unit of temperature used in the crate, kelvin.
-    fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
-        match self {
-            TemperatureUnit::Kelvin => |x| x,
-            TemperatureUnit::Celsius => |x| x + 273.15f64,
-            TemperatureUnit::Fahrenheit => |x| (x - 32f64) / 1.8f64 + 273.15f64,
-            TemperatureUnit::Rankine => |x| x / 1.8f64,
-            TemperatureUnit::Réaumur => |x| 1.25f64 * x + 273.15f64,
-            TemperatureUnit::Rømer => |x| (x - 7.5f64) * 40f64 / 21f64 + 273.15f64,
-            TemperatureUnit::Newton => |x| x * 100f64 / 33f64 + 273.15f64,
-            TemperatureUnit::Delisle => |x| 373.15f64 - 2f64 / 3f64 * x,
+    doc_to_base_unit! {
+        fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+            match self {
+                TemperatureUnit::Kelvin => |x| x,
+                TemperatureUnit::Celsius => |x| x + 273.15f64,
+                TemperatureUnit::Fahrenheit => |x| (x - 32f64) / 1.8f64 + 273.15f64,
+                TemperatureUnit::Rankine => |x| x / 1.8f64,
+                TemperatureUnit::Réaumur => |x| 1.25f64 * x + 273.15f64,
+                TemperatureUnit::Rømer => |x| (x - 7.5f64) * 40f64 / 21f64 + 273.15f64,
+                TemperatureUnit::Newton => |x| x * 100f64 / 33f64 + 273.15f64,
+                TemperatureUnit::Delisle => |x| 373.15f64 - 2f64 / 3f64 * x,
+            }
         }
     }
 
-    /// Returns a closure converting from the base unit of temperature used in the crate, kelvin, to a given temperature unit.
-    fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
-        match self {
-            TemperatureUnit::Kelvin => |x| x,
-            TemperatureUnit::Celsius => |x| x - 273.15f64,
-            TemperatureUnit::Fahrenheit => |x| (x - 273.15f64) * 1.8f64 + 32f64,
-            TemperatureUnit::Rankine => |x| x * 1.8f64,
-            TemperatureUnit::Réaumur => |x| (x - 273.15f64) * 0.8f64,
-            TemperatureUnit::Rømer => |x| (x - 273.15f64) * 0.525f64 + 7.5f64,
-            TemperatureUnit::Newton => |x| (x - 273.15f64) * 0.33f64,
-            TemperatureUnit::Delisle => |x| 1.5f64 * (373.15f64 - x),
+    doc_from_base_unit! {
+        fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+            match self {
+                TemperatureUnit::Kelvin => |x| x,
+                TemperatureUnit::Celsius => |x| x - 273.15f64,
+                TemperatureUnit::Fahrenheit => |x| (x - 273.15f64) * 1.8f64 + 32f64,
+                TemperatureUnit::Rankine => |x| x * 1.8f64,
+                TemperatureUnit::Réaumur => |x| (x - 273.15f64) * 0.8f64,
+                TemperatureUnit::Rømer => |x| (x - 273.15f64) * 0.525f64 + 7.5f64,
+                TemperatureUnit::Newton => |x| (x - 273.15f64) * 0.33f64,
+                TemperatureUnit::Delisle => |x| 1.5f64 * (373.15f64 - x),
+            }
         }
     }
 
-    /// Returns the name of a unit in singular.
-    /// 
-    /// ```
-    /// use unitconverter::temperature::TemperatureUnit;
-    /// 
-    /// let celsius = TemperatureUnit::Celsius;
-    /// 
-    /// assert_eq!(celsius.name_singular(), "degree Celsius");
-    /// ```
-    pub fn name_singular(&self) -> &str {
-        match self {
-            TemperatureUnit::Kelvin => "kelvin",
-            TemperatureUnit::Celsius => "degree Celsius",
-            TemperatureUnit::Fahrenheit => "degree Fahrenheit",
-            TemperatureUnit::Rankine => "degree Rankine",
-            TemperatureUnit::Réaumur => "degree Réaumur",
-            TemperatureUnit::Rømer => "degree Rømer",
-            TemperatureUnit::Newton => "degree Newton",
-            TemperatureUnit::Delisle => "degree Delisle",
+    doc_name_singular! {
+        pub fn name_singular(&self) -> &str {
+            match self {
+                TemperatureUnit::Kelvin => "kelvin",
+                TemperatureUnit::Celsius => "degree Celsius",
+                TemperatureUnit::Fahrenheit => "degree Fahrenheit",
+                TemperatureUnit::Rankine => "degree Rankine",
+                TemperatureUnit::Réaumur => "degree Réaumur",
+                TemperatureUnit::Rømer => "degree Rømer",
+                TemperatureUnit::Newton => "degree Newton",
+                TemperatureUnit::Delisle => "degree Delisle",
+            }
         }
     }
     
-    /// Returns the name of a unit in plural.
-    /// 
-    /// ```
-    /// use unitconverter::temperature::TemperatureUnit;
-    /// 
-    /// let celsius = TemperatureUnit::Celsius;
-    /// 
-    /// assert_eq!(celsius.name_plural(), "degrees Celsius");
-    /// ```
-    pub fn name_plural(&self) -> &str {
-        match self {
-            TemperatureUnit::Kelvin => "kelvin",
-            TemperatureUnit::Celsius => "degrees Celsius",
-            TemperatureUnit::Fahrenheit => "degrees Fahrenheit",
-            TemperatureUnit::Rankine => "degrees Rankine",
-            TemperatureUnit::Réaumur => "degrees Réaumur",
-            TemperatureUnit::Rømer => "degrees Rømer",
-            TemperatureUnit::Newton => "degrees Newton",
-            TemperatureUnit::Delisle => "degrees Delisle",
+    doc_name_plural! {
+        pub fn name_plural(&self) -> &str {
+            match self {
+                TemperatureUnit::Kelvin => "kelvin",
+                TemperatureUnit::Celsius => "degrees Celsius",
+                TemperatureUnit::Fahrenheit => "degrees Fahrenheit",
+                TemperatureUnit::Rankine => "degrees Rankine",
+                TemperatureUnit::Réaumur => "degrees Réaumur",
+                TemperatureUnit::Rømer => "degrees Rømer",
+                TemperatureUnit::Newton => "degrees Newton",
+                TemperatureUnit::Delisle => "degrees Delisle",
+            }
         }
     }
     
-    /// Returns the symbol of a unit.
-    /// 
-    /// ```
-    /// use unitconverter::temperature::TemperatureUnit;
-    /// 
-    /// let celsius = TemperatureUnit::Celsius;
-    /// 
-    /// assert_eq!(celsius.symbol(), "°C");
-    /// ```
-    pub fn symbol(&self) -> &str {
-        match self {
-            TemperatureUnit::Kelvin => "K",
-            TemperatureUnit::Celsius => "°C",
-            TemperatureUnit::Fahrenheit => "°F",
-            TemperatureUnit::Rankine => "°Ra",
-            TemperatureUnit::Réaumur => "°Ré",
-            TemperatureUnit::Rømer => "°Rø",
-            TemperatureUnit::Newton => "°N",
-            TemperatureUnit::Delisle => "°De",
+    doc_symbol! {
+        pub fn symbol(&self) -> &str {
+            match self {
+                TemperatureUnit::Kelvin => "K",
+                TemperatureUnit::Celsius => "°C",
+                TemperatureUnit::Fahrenheit => "°F",
+                TemperatureUnit::Rankine => "°Ra",
+                TemperatureUnit::Réaumur => "°Ré",
+                TemperatureUnit::Rømer => "°Rø",
+                TemperatureUnit::Newton => "°N",
+                TemperatureUnit::Delisle => "°De",
+            }
         }
     }
 }
 
-// /// # Measurement of Temperature
-// /// 
-// /// A measurement of temperature. Stored internally as kelvin, but output as any unit the user desires.
-// pub struct TemperatureMeasurement { value: f64 }
-
-// impl TemperatureMeasurement {
-//     /// # Store a New Measurement of Length
-//     /// 
-//     /// Measurements are stored using av value, a prefix, and a unit.
-//     /// 
-//     /// ```
-//     /// use unitconverter::temperature::{ TemperatureUnit, TemperatureMeasurement };
-//     /// use si_prefixes::Prefix;
-//     /// 
-//     /// // Desired input format.
-//     /// let one_hundred_celsius = TemperatureMeasurement::from(1f64, Prefix::Hecto, TemperatureUnit::Celsius);
-//     /// 
-//     /// assert_eq!(one_hundred_celsius.to(Prefix::None, TemperatureUnit::Kelvin), 373.15f64);
-//     /// ```
-//     pub fn from(value: f64, prefix: Prefix, unit: TemperatureUnit) -> Self {
-//         Self {
-//             value: unit.to_base_unit()(Prefix::conversion_constant(prefix, Prefix::None) * value)
-//         }
-//     }
-
-//     /// # Convert a Previously Stored Measurement of Length
-//     /// 
-//     /// Previously stored `TemperatureMeasurement`s are convdrted using a prefix and a unit.
-//     /// 
-//     /// ```
-//     /// use unitconverter::temperature::{ TemperatureUnit, TemperatureMeasurement };
-//     /// use si_prefixes::Prefix;
-//     /// 
-//     /// // Desired input format.
-//     /// let one_hundred_celsius = TemperatureMeasurement::from(1f64, Prefix::Hecto, TemperatureUnit::Celsius);
-//     /// 
-//     /// assert_eq!(one_hundred_celsius.to(Prefix::None, TemperatureUnit::Kelvin), 373.15f64);
-//     /// ```
-//     pub fn to(&self, prefix: Prefix, unit: TemperatureUnit) -> f64 {
-//         Prefix::conversion_constant(Prefix::None, prefix) * unit.from_base_unit()(self.value)
-//     }
-// }
-
 impl_measurement!(TemperatureMeasurement, TemperatureUnit);
-
-// impl_add_and_subtract!(TemperatureMeasurement);
 
 #[cfg(test)]
 mod tests {
