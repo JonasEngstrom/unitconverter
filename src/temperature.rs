@@ -10,29 +10,29 @@ use crate::macros::*;
 /// 
 /// ## References
 /// 
-/// 1. Bureau International des Poids et Mesures (2025). *Le Système international d’unités/The International System of Units*. 9th edition. [https://doi.org/10.59161/AUEZ1291](https://doi.org/10.59161/AUEZ1291)
-/// 2. National Institute of Standards and Technology (2026). *Specifications, Tolerances, and Other Technical Requirements for Weighing and Measuring Devices* [https://doi.org/10.6028/NIST.HB.44-2026](https://doi.org/10.6028/NIST.HB.44-2026)
-/// 3. National Institute of Standards and Technology (2008). *NIST Special Publication 811, Guide for the Use of the International System of Units (SI)* [https://www.nist.gov/pml/special-publication-811](https://www.nist.gov/pml/special-publication-811)
-/// 4. Hofstad, K. (2025). *Réaumurskalaen* in *Store norske leksikon* [https://snl.no/r%C3%A9aumurskalaen](https://snl.no/r%C3%A9aumurskalaen)
-/// 5. Meyer, K. Nature **82**, 296–298 (1910). *Ole Römer and the Thermometer* [https://doi.org/10.1038/082296a0](https://doi.org/10.1038/082296a0)
-/// 6. Grigull, U. Wärme- und Stoffübertragung **18**, 195-199 (1984). *Newton’s temperature scale and the law of cooling* [https://doi.org/10.1007/BF01007129](https://doi.org/10.1007/BF01007129)
-/// 7. [https://en.wikipedia.org/wiki/Delisle_scale](https://en.wikipedia.org/wiki/Delisle_scale)
+/// 1. [Le Système international d’unités, 9e édition. Sèvres (France): Bureau International des Poids et Mesures; 2025 Aug. doi:10.59161/AUEZ1291](https://www.doi.org/10.59161/AUEZ1291)
+/// 2. [Delisle scale. In: Wikipedia. 2025.](https://en.wikipedia.org/wiki/Delisle_scale)
+/// 3. [Chavez Baucom I, Benham EJ, Konijnenburg J, Lee GD, Lippa KA, McGuire JT, et al. Specifications, tolerances, and other technical requirements for weighing and measuring devices—as adopted by the 110th National Council on Weights and Measures. Gaithersburg (MD): National Institute of Standards and Technology; 2026 Jan. Report NIST HB 44-2026. doi:10.6028/NIST.HB.44-2026](https://www.doi.org/10.6028/NIST.HB.44-2026)
+/// 4. [Grigull U. Newton’s temperature scale and the law of cooling. Wärme- und Stoffübertragung. 1984 Dec;18(4):195–9. doi:10.1007/BF01007129](https://www.doi.org/10.1007/BF01007129)
+/// 5. [Thompson A, Taylor BN. Guide for the use of the international system of units (SI). Gaithersburg (MD): National Institute of Standards and Technology; 2008 Mar. Report NIST Special Publication 811.](https://www.nist.gov/pml/special-publication-811)
+/// 6. [Hofstad K. Réaumurskalaen. In: Store Norske Leksikon. Oslo (Norway); 2025.](https://snl.no/réaumurskalaen)
+/// 7. [Meyer K. Ole Römer and the Thermometer. Nature. 1910 Jan 6;82(2097):296–8. doi:10.1038/082296a0](https://www.doi.org/10.1038/082296a0)
 pub enum TemperatureUnit {
     /// Defined as the T - 273.15, where T is the temperature in kelvin. Represented by the symbol °C.<sup>1</sup>
     Celsius,
-    /// Defined as (373.15 - T) × 3 / 2, where T is the temperature in kelvin. Represented by the symbol °De.<sup>7</sup>
+    /// Defined as (373.15 - T) × 3 / 2, where T is the temperature in kelvin. Represented by the symbol °De.<sup>2</sup>
     Delisle,
-    /// Defined as (T - 273.15) × 1.8 + 32, where T is the temperature in kelvin. Represented by the symbol °F.<sup>2</sup>
+    /// Defined as (T - 273.15) × 1.8 + 32, where T is the temperature in kelvin. Represented by the symbol °F.<sup>3</sup>
     Fahrenheit,
     /// Defined by taking the fixed numerical value of the Boltzmann constant to be 1.380649 × 10<sup>-23</sup> when expressed in J/K. Represented by the symbol K.<sup>1</sup>
     Kelvin,
-    /// Although no definitive conversion factor can be determined based on Newton’s own notes, this crate uses approximation of (T - 273.15) × 0.33, where T is the temperature in kelvin. Represented by the symbol °N.<sup>6</sup>
+    /// Although no definitive conversion factor can be determined based on Newton’s own notes, this crate uses approximation of (T - 273.15) × 0.33, where T is the temperature in kelvin. Represented by the symbol °N.<sup>4</sup>
     Newton,
-    /// Defined as T × 1.8, where T is the temperature in kelvin.<sup>3</sup> Often represented by the symbol °R, but represented by °Ra in this crate, to distinguish it from degrees in the other temperature scales starting with R.
+    /// Defined as T × 1.8, where T is the temperature in kelvin.<sup>5</sup> Often represented by the symbol °R, but represented by °Ra in this crate, to distinguish it from degrees in the other temperature scales starting with R.
     Rankine,
-    /// Defined as (T - 273.15) × 0.8, where T is the temperature in kelvin.<sup>4</sup>  Often represented by the symbol °R, but represented by °Ré in this crate, to distinguish it from degrees in the other temperature scales starting with R.
+    /// Defined as (T - 273.15) × 0.8, where T is the temperature in kelvin.<sup>6</sup>  Often represented by the symbol °R, but represented by °Ré in this crate, to distinguish it from degrees in the other temperature scales starting with R.
     Réaumur,
-    /// Estimated to be (T - 273.15) × 0.525 + 7.5, where T is the temperature i Kelvin.<sup>5</sup> Someteimes represented by the symbol °R, but represented by °Rø in this crate, to distinguish it from degrees in the other temperature scales starting with R.
+    /// Estimated to be (T - 273.15) × 0.525 + 7.5, where T is the temperature i Kelvin.<sup>7</sup> Someteimes represented by the symbol °R, but represented by °Rø in this crate, to distinguish it from degrees in the other temperature scales starting with R.
     Rømer,
 }
 

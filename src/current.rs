@@ -10,7 +10,7 @@ use crate::macros::*;
 /// 
 /// ## References
 /// 
-/// 1. Bureau International des Poids et Mesures. (2025). *Le Système international d’unités/The International System of Units*. 9th edition. [https://doi.org/10.59161/AUEZ1291](https://doi.org/10.59161/AUEZ1291)
+/// 1. [Le Système international d’unités, 9e édition. Sèvres (France): Bureau International des Poids et Mesures; 2025 Aug. doi:10.59161/AUEZ1291](https://www.doi.org/10.59161/AUEZ1291)
 pub enum CurrentUnit {
     /// Since the 2019 revision of the SI system defined by taking the fixed numerical value of the elementary charge to be 1.602176634 × 10<sup>-19</sup> when expressed in coulomb, which is equal to ampere-seconds. The second being defined from the unperturbed ground state hyperfine transition frequency of the cesum 133 atom. Represented by the symbol A.<sup>1</sup>
     Ampere,
