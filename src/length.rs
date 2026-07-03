@@ -10,20 +10,20 @@ use crate::macros::*;
 /// 
 /// ## References
 /// 
-/// 1. Bureau International des Poids et Mesures. (2025). *Le Système international d’unités/The International System of Units*. 9th edition. [https://doi.org/10.59161/AUEZ1291](https://doi.org/10.59161/AUEZ1291)
-/// 2. National Bureau of Standards. (1959) *Refinement of Values for the Yard and the Pound*. [https://www.nist.gov/system/files/documents/2017/05/09/frn-59-5442-1959.pdf](https://www.nist.gov/system/files/documents/2017/05/09/frn-59-5442-1959.pdf)
-/// 3. United Nations Economic Commission for Europe. (1995) *Codes for Units of Measure Used in International Trade*. [https://unece.org/sites/default/files/datastore/fileadmin/DAM/trade/untdid/download/r1224a2.pdf](https://unece.org/sites/default/files/datastore/fileadmin/DAM/trade/untdid/download/r1224a2.pdf)
-/// 4. National Institute of Standards and Technology. (2014) *Specifications, Tolerances, and Other Technical Requirements for Weighing and Measuring Devices*. [https://web.archive.org/web/20160730042942/http://www.nist.gov/pml/wmd/pubs/upload/hb44-14-final-web.pdf](https://web.archive.org/web/20160730042942/http://www.nist.gov/pml/wmd/pubs/upload/hb44-14-final-web.pdf)
+/// 1. [Astin AV, Arnold Karo H, Mueller FH. Refinement of values for the yard and the pound. Gaithersburg (MD): National Bureau of Standards; 1959 Jun. Report F.R. Doc. 59-5442.](https://www.nist.gov/system/files/documents/2017/05/09/frn-59-5442-1959.pdf)
+/// 2. [Codes for units of measure used in international trade, annex C. units of measure: code elements listed by name. Geneva (Switzerland): United Nations Economic Commission for Europe; 1996 Jun. Report TRADE/WP.4/R.1224/Add.2.](https://unece.org/sites/default/files/datastore/fileadmin/DAM/trade/untdid/download/r1224a2.pdf)
+/// 3. [Le Système international d’unités, 9e édition. Sèvres (France): Bureau International des Poids et Mesures; 2025 Aug. doi:10.59161/AUEZ1291](https://www.doi.org/10.59161/AUEZ1291)
+/// 4. [Chavez Baucom I, Benham EJ, Konijnenburg J, Lee GD, Lippa KA, McGuire JT, et al. Specifications, tolerances, and other technical requirements for weighing and measuring devices—as adopted by the 110th National Council on Weights and Measures. Gaithersburg (MD): National Institute of Standards and Technology; 2026 Jan. Report NIST HB 44-2026. doi:10.6028/NIST.HB.44-2026](https://www.doi.org/10.6028/NIST.HB.44-2026)
 pub enum LengthUnit {
-    /// Defined as 0.3048 meters, since the adoption of the international yard in 1959. Equal to 12 inches.<sup>2</sup> Represented by the symbol ft.<sup>3</sup>
+    /// Defined as 0.3048 meters, since the adoption of the international yard in 1959. Equal to 12 inches.<sup>1</sup> Represented by the symbol ft.<sup>2</sup>
     Foot,
-    /// Defined as 0.0254 meters, since the adoption of the international yard in 1959.<sup>2</sup> Represented by the symbol in.<sup>3</sup>
+    /// Defined as 0.0254 meters, since the adoption of the international yard in 1959.<sup>1</sup> Represented by the symbol in.<sup>2</sup>
     Inch,
-    /// Defined as the length of the path travelled by light in vacuum during 1 / 299,792,458 seconds, since the 2019 revision of the SI system. Represented by the symbol m.<sup>1</sup>
+    /// Defined as the length of the path travelled by light in vacuum during 1 / 299,792,458 seconds, since the 2019 revision of the SI system. Represented by the symbol m.<sup>3</sup>
     Meter,
-    /// Defined as 1609.344 meters, since the adoption of the international yard in 1959. Equal to 1,760 yards.<sup>2</sup> Represented by the symbol mi.<sup>4</sup>
+    /// Defined as 1609.344 meters, since the adoption of the international yard in 1959. Equal to 1,760 yards.<sup>1</sup> Represented by the symbol mi.<sup>4</sup>
     Mile,
-    /// Defined as 0.9144 meters, since the adoption of the international yard in 1959. Equal to 3 feet.<sup>2</sup> Represented by the symbol yd.<sup>3</sup>
+    /// Defined as 0.9144 meters, since the adoption of the international yard in 1959. Equal to 3 feet.<sup>1</sup> Represented by the symbol yd.<sup>2</sup>
     Yard,
 }
 

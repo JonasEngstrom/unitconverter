@@ -10,7 +10,7 @@ use crate::macros::*;
 /// 
 /// ## References
 /// 
-/// 1. Bureau International des Poids et Mesures (2025). *Le Système international d’unités/The International System of Units*. 9th edition. [https://doi.org/10.59161/AUEZ1291](https://doi.org/10.59161/AUEZ1291)
+/// 1. [Le Système international d’unités, 9e édition. Sèvres (France): Bureau International des Poids et Mesures; 2025 Aug. doi:10.59161/AUEZ1291](https://www.doi.org/10.59161/AUEZ1291)
 pub enum LuminousIntensityUnit {
     /// Defined by taking the fixed numerical value of the luminous efficacy of monochromatic radiation of frequency 540 × 10<sup>12</sup> Hz to be 683 when expressed in the unit lm W<sup>-1</sup>. Represented by the symbol cd.<sup>1</sup>
     Candela,

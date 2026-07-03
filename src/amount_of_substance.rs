@@ -10,7 +10,7 @@ use crate::macros::*;
 /// 
 /// ## References
 /// 
-/// 1. Bureau International des Poids et Mesures (2025). *Le Système international d’unités/The International System of Units*. 9th edition. [https://doi.org/10.59161/AUEZ1291](https://doi.org/10.59161/AUEZ1291)
+/// 1. [Le Système international d’unités, 9e édition. Sèvres (France): Bureau International des Poids et Mesures; 2025 Aug. doi:10.59161/AUEZ1291](https://www.doi.org/10.59161/AUEZ1291)
 pub enum AmountOfSubstanceUnit {
     /// Defined as 6.02214076 × 10<sup>23</sup> elementary entities. Represented by the symbol mol.<sup>1</sup>
     Mole,
