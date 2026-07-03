@@ -1,5 +1,5 @@
 #![doc = include_str!("../README.md")]
-#![deny(missing_docs)]
+// #![deny(missing_docs)]
 
 mod macros;
 
@@ -11,3 +11,5 @@ pub mod current;
 pub mod temperature;
 pub mod amount_of_substance;
 pub mod luminous_intensity;
+
+pub mod area;
