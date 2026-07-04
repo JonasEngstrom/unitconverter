@@ -29,7 +29,7 @@ pub enum LengthUnit {
 
 impl LengthUnit {
     doc_to_base_unit! {
-        pub fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+        pub(crate) fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
             match self {
                 LengthUnit::Meter => |x| x,
                 LengthUnit::Inch => |x| 0.025_4f64 * x,
@@ -41,7 +41,7 @@ impl LengthUnit {
     }
 
     doc_from_base_unit! {
-        pub fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+        pub(crate) fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
             match self {
                 LengthUnit::Meter => |x| x,
                 LengthUnit::Inch => |x| x / 0.025_4f64,

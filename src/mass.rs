@@ -22,7 +22,7 @@ pub enum MassUnit {
 
 impl MassUnit {
     doc_to_base_unit! {
-        fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+        pub(crate) fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
             match self {
                 MassUnit::Gram => |x| 0.001f64 * x,
                 MassUnit::Pound => |x| 0.453_592_37f64 * x,
@@ -31,7 +31,7 @@ impl MassUnit {
     }
 
     doc_from_base_unit! {
-        fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+        pub(crate) fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
             match self {
                 MassUnit::Gram => |x| x / 0.001f64,
                 MassUnit::Pound => |x| x / 0.453_592_37f64,

@@ -18,7 +18,7 @@ pub enum CurrentUnit {
 
 impl CurrentUnit {
     doc_to_base_unit! {
-        fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+        pub(crate) fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
             match self {
                 CurrentUnit::Ampere => |x| x,
             }
@@ -26,7 +26,7 @@ impl CurrentUnit {
     }
 
     doc_from_base_unit! {
-        fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+        pub(crate) fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
             match self {
                 CurrentUnit::Ampere => |x| x,
             }

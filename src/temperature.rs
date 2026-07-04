@@ -38,7 +38,7 @@ pub enum TemperatureUnit {
 
 impl TemperatureUnit {
     doc_to_base_unit! {
-        fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+        pub(crate) fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
             match self {
                 TemperatureUnit::Kelvin => |x| x,
                 TemperatureUnit::Celsius => |x| x + 273.15f64,
@@ -53,7 +53,7 @@ impl TemperatureUnit {
     }
 
     doc_from_base_unit! {
-        fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+        pub(crate) fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
             match self {
                 TemperatureUnit::Kelvin => |x| x,
                 TemperatureUnit::Celsius => |x| x - 273.15f64,
