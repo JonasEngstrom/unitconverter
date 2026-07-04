@@ -39,7 +39,7 @@ macro_rules! impl_measurement {
             /// For more information on how to use the crate, including code examples, see [the crate documentation root page](crate) or the `README.md` file in [the GitHub repo](https://github.com/JonasEngstrom/unitconverter).
             pub fn from(value: f64, prefix: Prefix, unit: $unit_type) -> Self {
                 Self {
-                    value: unit.to_base_unit()(Prefix::conversion_constant(prefix, Prefix::None) * value)
+                    value: unit.to_base_unit()(Prefix::conversion_constant(&prefix, &Prefix::None) * value)
                 }
             }
     
@@ -49,7 +49,7 @@ macro_rules! impl_measurement {
             /// 
             /// For more information on how to use the crate, including code examples, see [the crate documentation root page](crate) or the `README.md` file in [the GitHub repo](https://github.com/JonasEngstrom/unitconverter).
             pub fn to(&self, prefix: Prefix, unit: $unit_type) -> f64 {
-                Prefix::conversion_constant(Prefix::None, prefix) * unit.from_base_unit()(self.value)
+                Prefix::conversion_constant(&Prefix::None, &prefix) * unit.from_base_unit()(self.value)
             }
         }
 
