@@ -3,6 +3,7 @@
 //! The base unit used to store mass in the `unitconverter` crate is kilograms.
 
 use crate::macros::*;
+use crate::formulas::*;
 
 /// # Units of Mass
 /// 
@@ -21,20 +22,20 @@ pub enum MassUnit {
 }
 
 impl MassUnit {
-    doc_to_base_unit! {
-        pub(crate) fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+    doc_to_base_unit_formula! {
+        fn to_base_unit_formula(&self) -> Formula {
             match self {
-                MassUnit::Gram => |x| 0.001f64 * x,
-                MassUnit::Pound => |x| 0.453_592_37f64 * x,
+                MassUnit::Gram => Formula::Multiply{ scale: 0.001f64 },
+                MassUnit::Pound => Formula::Multiply{ scale: 0.453_592_37f64 },
             }
         }
     }
 
-    doc_from_base_unit! {
-        pub(crate) fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+    doc_from_base_unit_formula! {
+        fn from_base_unit_formula(&self) -> Formula {
             match self {
-                MassUnit::Gram => |x| x / 0.001f64,
-                MassUnit::Pound => |x| x / 0.453_592_37f64,
+                MassUnit::Gram => Formula::Divide{ scale: 0.001f64 },
+                MassUnit::Pound => Formula::Divide{ scale: 0.453_592_37f64 },
             }
         }
     }
@@ -75,14 +76,14 @@ mod tests {
     
     #[test]
     fn to_base_units_are_correct() {
-        assert_eq!(MassUnit::Gram.to_base_unit()(1f64), 0.001f64);
-        assert_eq!(MassUnit::Pound.to_base_unit()(1f64), 0.453_592_37f64);
+        assert_eq!(MassUnit::Gram.to_base_unit(1f64), 0.001f64);
+        assert_eq!(MassUnit::Pound.to_base_unit(1f64), 0.453_592_37f64);
     }
 
     #[test]
     fn from_base_units_are_correct() {
-        assert_eq!(MassUnit::Gram.from_base_unit()(0.001f64), 1f64);
-        assert_eq!(MassUnit::Pound.from_base_unit()(0.453_592_37f64), 1f64);
+        assert_eq!(MassUnit::Gram.from_base_unit(0.001f64), 1f64);
+        assert_eq!(MassUnit::Pound.from_base_unit(0.453_592_37f64), 1f64);
     }
 
     #[test]

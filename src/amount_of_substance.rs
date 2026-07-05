@@ -3,6 +3,7 @@
 //! The base unit used to store amount of substance in the `unitconverter` crate is moles.
 
 use crate::macros::*;
+use crate::formulas::*;
 
 /// # Units of Amount of Subtance
 /// 
@@ -17,18 +18,18 @@ pub enum AmountOfSubstanceUnit {
 }
 
 impl AmountOfSubstanceUnit {
-    doc_to_base_unit! {
-        fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+    doc_to_base_unit_formula! {
+        fn to_base_unit_formula(&self) -> Formula {
             match self {
-                AmountOfSubstanceUnit::Mole => |x| x,
+                AmountOfSubstanceUnit::Mole => Formula::Multiply{ scale: 1f64 },
             }
         }
     }
 
-    doc_from_base_unit! {
-        fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+    doc_from_base_unit_formula! {
+        fn from_base_unit_formula(&self) -> Formula {
             match self {
-                AmountOfSubstanceUnit::Mole => |x| x,
+                AmountOfSubstanceUnit::Mole => Formula::Divide{ scale: 1f64 },
             }
         }
     }
@@ -66,12 +67,12 @@ mod tests {
     
     #[test]
     fn to_base_units_are_correct() {
-        assert_eq!(AmountOfSubstanceUnit::Mole.to_base_unit()(1f64), 1f64);
+        assert_eq!(AmountOfSubstanceUnit::Mole.to_base_unit(1f64), 1f64);
     }
 
     #[test]
     fn from_base_units_are_correct() {
-        assert_eq!(AmountOfSubstanceUnit::Mole.from_base_unit()(1f64), 1f64);
+        assert_eq!(AmountOfSubstanceUnit::Mole.from_base_unit(1f64), 1f64);
     }
 
     #[test]

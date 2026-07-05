@@ -3,6 +3,7 @@
 //! The base unit used to store temperature in the `unitconverter` crate is seconds.
 
 use crate::macros::*;
+use crate::formulas::*;
 
 /// # Units of Time
 /// 
@@ -23,24 +24,24 @@ pub enum TimeUnit {
 }
 
 impl TimeUnit {
-    doc_to_base_unit! {
-        pub(crate) fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+    doc_to_base_unit_formula! {
+        fn to_base_unit_formula(&self) -> Formula {
             match self {
-                TimeUnit::Second => |x| x,
-                TimeUnit::Minute => |x| 60f64 * x,
-                TimeUnit::Hour => |x| 3_600f64 * x,
-                TimeUnit::Day => |x| 86_400f64 * x,
+                TimeUnit::Second => Formula::Multiply{ scale: 1f64 },
+                TimeUnit::Minute => Formula::Multiply{ scale: 60f64 },
+                TimeUnit::Hour => Formula::Multiply{ scale: 3_600f64 },
+                TimeUnit::Day => Formula::Multiply{ scale: 86_400f64 },
             }
         }
     }
 
-    doc_from_base_unit! {
-        pub(crate) fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+    doc_from_base_unit_formula! {
+        fn from_base_unit_formula(&self) -> Formula {
             match self {
-                TimeUnit::Second => |x| x,
-                TimeUnit::Minute => |x| x / 60f64,
-                TimeUnit::Hour => |x| x / 3_600f64,
-                TimeUnit::Day => |x| x / 86_400f64,
+                TimeUnit::Second => Formula::Divide{ scale: 1f64 },
+                TimeUnit::Minute => Formula::Divide{ scale: 60f64 },
+                TimeUnit::Hour => Formula::Divide{ scale: 3_600f64 },
+                TimeUnit::Day => Formula::Divide{ scale: 86_400f64 },
             }
         }
     }
@@ -87,18 +88,18 @@ mod tests {
 
     #[test]
     fn to_base_units_are_correct() {
-        assert_eq!(TimeUnit::Second.to_base_unit()(1f64), 1f64);
-        assert_eq!(TimeUnit::Minute.to_base_unit()(1f64), 60f64);
-        assert_eq!(TimeUnit::Hour.to_base_unit()(1f64), 3_600f64);
-        assert_eq!(TimeUnit::Day.to_base_unit()(1f64), 86_400f64);
+        assert_eq!(TimeUnit::Second.to_base_unit(1f64), 1f64);
+        assert_eq!(TimeUnit::Minute.to_base_unit(1f64), 60f64);
+        assert_eq!(TimeUnit::Hour.to_base_unit(1f64), 3_600f64);
+        assert_eq!(TimeUnit::Day.to_base_unit(1f64), 86_400f64);
     }
 
     #[test]
     fn from_base_units_are_correct() {
-        assert_eq!(TimeUnit::Second.from_base_unit()(1f64), 1f64);
-        assert_eq!(TimeUnit::Minute.from_base_unit()(60f64), 1f64);
-        assert_eq!(TimeUnit::Hour.from_base_unit()(3_600f64), 1f64);
-        assert_eq!(TimeUnit::Day.from_base_unit()(86_400f64), 1f64);
+        assert_eq!(TimeUnit::Second.from_base_unit(1f64), 1f64);
+        assert_eq!(TimeUnit::Minute.from_base_unit(60f64), 1f64);
+        assert_eq!(TimeUnit::Hour.from_base_unit(3_600f64), 1f64);
+        assert_eq!(TimeUnit::Day.from_base_unit(86_400f64), 1f64);
     }
 
     #[test]

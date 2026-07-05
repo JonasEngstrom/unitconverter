@@ -3,6 +3,7 @@
 //! The base unit used to store electric current in the `unitconverter` crate is amperes.
 
 use crate::macros::*;
+use crate::formulas::*;
 
 /// # Units of Electric Current
 /// 
@@ -17,18 +18,18 @@ pub enum CurrentUnit {
 }
 
 impl CurrentUnit {
-    doc_to_base_unit! {
-        pub(crate) fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+    doc_to_base_unit_formula! {
+        fn to_base_unit_formula(&self) -> Formula {
             match self {
-                CurrentUnit::Ampere => |x| x,
+                CurrentUnit::Ampere => Formula::Multiply{ scale: 1f64 },
             }
         }
     }
 
-    doc_from_base_unit! {
-        pub(crate) fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+    doc_from_base_unit_formula! {
+        fn from_base_unit_formula(&self) -> Formula {
             match self {
-                CurrentUnit::Ampere => |x| x,
+                CurrentUnit::Ampere => Formula::Divide{ scale: 1f64 },
             }
         }
     }
@@ -66,12 +67,12 @@ mod tests {
 
     #[test]
     fn to_base_units_are_correct() {
-        assert_eq!(CurrentUnit::Ampere.to_base_unit()(1f64), 1f64);
+        assert_eq!(CurrentUnit::Ampere.to_base_unit(1f64), 1f64);
     }
 
     #[test]
     fn from_base_units_are_correct() {
-        assert_eq!(CurrentUnit::Ampere.from_base_unit()(1f64), 1f64);
+        assert_eq!(CurrentUnit::Ampere.from_base_unit(1f64), 1f64);
     }
 
     #[test]

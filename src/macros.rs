@@ -39,7 +39,7 @@ macro_rules! impl_measurement {
             /// For more information on how to use the crate, including code examples, see [the crate documentation root page](crate) or the `README.md` file in [the GitHub repo](https://github.com/JonasEngstrom/unitconverter).
             pub fn from(value: f64, prefix: Prefix, unit: $unit_type) -> Self {
                 Self {
-                    value: unit.to_base_unit()(Prefix::conversion_constant(&prefix, &Prefix::None) * value)
+                    value: unit.to_base_unit(Prefix::conversion_constant(&prefix, &Prefix::None) * value)
                 }
             }
     
@@ -49,7 +49,7 @@ macro_rules! impl_measurement {
             /// 
             /// For more information on how to use the crate, including code examples, see [the crate documentation root page](crate) or the `README.md` file in [the GitHub repo](https://github.com/JonasEngstrom/unitconverter).
             pub fn to(&self, prefix: Prefix, unit: $unit_type) -> f64 {
-                Prefix::conversion_constant(&Prefix::None, &prefix) * unit.from_base_unit()(self.value)
+                Prefix::conversion_constant(&Prefix::None, &prefix) * unit.from_base_unit(self.value)
             }
         }
 
@@ -93,23 +93,33 @@ macro_rules! impl_measurement {
 
 pub(crate) use impl_measurement;
 
-macro_rules! doc_to_base_unit {
-    ($to_base_unit: item) => {
-        /// Returns a closure converting a unit into the base unit of the quantity.
-        $to_base_unit
+macro_rules! doc_to_base_unit_formula {
+    ($to_base_unit_formula: item) => {
+        /// Returns the a formula used to convert an f64 into the base unit of the quantity.
+        $to_base_unit_formula
+        
+        /// Returns an f64 converted from a unit into the base unit of the quantity.
+        pub(crate) fn to_base_unit(&self, value_to_convert: f64) -> f64 {
+            self.to_base_unit_formula().apply(value_to_convert)
+        }
     }
 }
 
-pub(crate) use doc_to_base_unit;
+pub(crate) use doc_to_base_unit_formula;
 
-macro_rules! doc_from_base_unit {
-    ($from_base_unit: item) => {
-        /// Returns a closure converting the base unit of a quantity into another unit.
-        $from_base_unit
+macro_rules! doc_from_base_unit_formula {
+    ($from_base_unit_formula: item) => {
+        /// Returns the a formula used to convert an f64 from the base unit into another unit.
+        $from_base_unit_formula
+
+        /// Returns an f64 converted from the base unit of a quantity into another unit.
+        pub(crate) fn from_base_unit(&self, value_to_convert: f64) -> f64 {
+            self.from_base_unit_formula().apply(value_to_convert)
+        }
     }
 }
 
-pub(crate) use doc_from_base_unit;
+pub(crate) use doc_from_base_unit_formula;
 
 macro_rules! doc_name_singular {
     ($name_singular: item) => {

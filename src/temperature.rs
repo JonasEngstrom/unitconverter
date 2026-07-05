@@ -3,6 +3,7 @@
 //! The base unit used to store temperature in the `unitconverter` crate is kelvin.
 
 use crate::macros::*;
+use crate::formulas::*;
 
 /// # Units of Temperature
 /// 
@@ -37,32 +38,80 @@ pub enum TemperatureUnit {
 }
 
 impl TemperatureUnit {
-    doc_to_base_unit! {
-        pub(crate) fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+    doc_to_base_unit_formula! {
+        fn to_base_unit_formula(&self) -> Formula {
             match self {
-                TemperatureUnit::Kelvin => |x| x,
-                TemperatureUnit::Celsius => |x| x + 273.15f64,
-                TemperatureUnit::Fahrenheit => |x| (x - 32f64) / 1.8f64 + 273.15f64,
-                TemperatureUnit::Rankine => |x| x / 1.8f64,
-                TemperatureUnit::Réaumur => |x| 1.25f64 * x + 273.15f64,
-                TemperatureUnit::Rømer => |x| (x - 7.5f64) * 40f64 / 21f64 + 273.15f64,
-                TemperatureUnit::Newton => |x| x * 100f64 / 33f64 + 273.15f64,
-                TemperatureUnit::Delisle => |x| 373.15f64 - 2f64 / 3f64 * x,
+                TemperatureUnit::Kelvin => Formula::Affine {
+                    scale: 1f64,
+                    offset: 0f64,
+                },
+                TemperatureUnit::Celsius => Formula::Affine {
+                    scale: 1f64,
+                    offset: 273.15f64,
+                },
+                TemperatureUnit::Fahrenheit => Formula::Affine {
+                    scale: 1f64 / 1.8f64,
+                    offset: 273.15f64 - 32f64 / 1.8f64,
+                },
+                TemperatureUnit::Rankine => Formula::Affine {
+                    scale: 1f64 / 1.8f64,
+                    offset: 0f64,
+                },
+                TemperatureUnit::Réaumur => Formula::Affine {
+                    scale: 1.25f64,
+                    offset: 273.15f64,
+                },
+                TemperatureUnit::Rømer => Formula::Affine {
+                    scale: 40f64 / 21f64,
+                    offset: 273.15f64 - 7.5f64 * 40f64 / 21f64,
+                },
+                TemperatureUnit::Newton => Formula::Affine {
+                    scale: 100f64 / 33f64,
+                    offset: 273.15f64,
+                },
+                TemperatureUnit::Delisle => Formula::Affine {
+                    scale: -2f64 / 3f64,
+                    offset: 373.15f64,
+                },
             }
         }
     }
 
-    doc_from_base_unit! {
-        pub(crate) fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+    doc_from_base_unit_formula! {
+        fn from_base_unit_formula(&self) -> Formula {
             match self {
-                TemperatureUnit::Kelvin => |x| x,
-                TemperatureUnit::Celsius => |x| x - 273.15f64,
-                TemperatureUnit::Fahrenheit => |x| (x - 273.15f64) * 1.8f64 + 32f64,
-                TemperatureUnit::Rankine => |x| x * 1.8f64,
-                TemperatureUnit::Réaumur => |x| (x - 273.15f64) * 0.8f64,
-                TemperatureUnit::Rømer => |x| (x - 273.15f64) * 0.525f64 + 7.5f64,
-                TemperatureUnit::Newton => |x| (x - 273.15f64) * 0.33f64,
-                TemperatureUnit::Delisle => |x| 1.5f64 * (373.15f64 - x),
+                TemperatureUnit::Kelvin => Formula::Affine {
+                    scale: 1f64,
+                    offset: 0f64,
+                },
+                TemperatureUnit::Celsius => Formula::Affine {
+                    scale: 1f64,
+                    offset: -273.15f64,
+                },
+                TemperatureUnit::Fahrenheit => Formula::Affine {
+                    scale: 1.8f64,
+                    offset: 32f64 - 273.15f64 * 1.8f64,
+                },
+                TemperatureUnit::Rankine => Formula::Affine {
+                    scale: 1.8f64,
+                    offset: 0f64,
+                },
+                TemperatureUnit::Réaumur => Formula::Affine {
+                    scale: 0.8f64,
+                    offset: -273.15f64 * 0.8f64,
+                },
+                TemperatureUnit::Rømer => Formula::Affine {
+                    scale: 0.525f64,
+                    offset: 7.5f64 - 273.15f64 * 0.525f64,
+                },
+                TemperatureUnit::Newton => Formula::Affine {
+                    scale: 0.33f64,
+                    offset: -273.15f64 * 0.33f64,
+                },
+                TemperatureUnit::Delisle => Formula::Affine {
+                    scale: -1.5f64,
+                    offset: 1.5f64 * 373.15f64,
+                },
             }
         }
     }
@@ -175,7 +224,7 @@ mod tests {
         assert_eq!(one_hundred_kelvin.to(Prefix::Deci, TemperatureUnit::Newton), -571.395f64);
         assert_almost_eq!(one_hundred_kelvin.to(Prefix::Deci, TemperatureUnit::Réaumur), -1385.2f64);
         assert_almost_eq!(one_hundred_kelvin.to(Prefix::Deci, TemperatureUnit::Rømer), -834.0375f64);
-        assert_eq!(one_hundred_kelvin.to(Prefix::Deci, TemperatureUnit::Delisle), 4097.25f64);
+        assert_almost_eq!(one_hundred_kelvin.to(Prefix::Deci, TemperatureUnit::Delisle), 4097.25f64);
     }
 
     #[test]
@@ -202,7 +251,7 @@ mod tests {
         assert_eq!(one_hundred_fahrenheit.to(Prefix::Deci, TemperatureUnit::Rankine), 5596.7f64);
         assert_almost_eq!(one_hundred_fahrenheit.to(Prefix::Deci, TemperatureUnit::Newton), 68f64 * 11f64 / 60f64 * 10f64);
         assert_almost_eq!(one_hundred_fahrenheit.to(Prefix::Deci, TemperatureUnit::Réaumur), 68f64 * 4f64 / 9f64 * 10f64);
-        assert_eq!(one_hundred_fahrenheit.to(Prefix::Deci, TemperatureUnit::Rømer), (68f64 * 7f64 / 24f64 + 7.5f64) * 10f64);
+        assert_almost_eq!(one_hundred_fahrenheit.to(Prefix::Deci, TemperatureUnit::Rømer), (68f64 * 7f64 / 24f64 + 7.5f64) * 10f64);
         assert_almost_eq!(one_hundred_fahrenheit.to(Prefix::Deci, TemperatureUnit::Delisle), 5600f64 / 6f64);
     }
 
@@ -211,13 +260,13 @@ mod tests {
         let one_hundred_rankine = TemperatureMeasurement::from(1f64, Prefix::Hecto, TemperatureUnit::Rankine);
 
         assert_almost_eq!(one_hundred_rankine.to(Prefix::Deci, TemperatureUnit::Celsius), -391.67f64 * 5f64 / 9f64 * 10f64);
-        assert_eq!(one_hundred_rankine.to(Prefix::None, TemperatureUnit::Fahrenheit), -359.67f64);
+        assert_almost_eq!(one_hundred_rankine.to(Prefix::None, TemperatureUnit::Fahrenheit), -359.67f64);
         assert_eq!(one_hundred_rankine.to(Prefix::Deci, TemperatureUnit::Kelvin), 5000f64 / 9f64);
         assert_eq!(one_hundred_rankine.to(Prefix::Deci, TemperatureUnit::Rankine), 1000f64);
-        assert_eq!(one_hundred_rankine.to(Prefix::Deci, TemperatureUnit::Newton), -391.67f64 * 11f64 / 60f64 * 10f64);
-        assert_eq!(one_hundred_rankine.to(Prefix::Deci, TemperatureUnit::Réaumur), -391.67f64 * 4f64 / 9f64 * 10f64);
+        assert_almost_eq!(one_hundred_rankine.to(Prefix::Deci, TemperatureUnit::Newton), -391.67f64 * 11f64 / 60f64 * 10f64);
+        assert_almost_eq!(one_hundred_rankine.to(Prefix::Deci, TemperatureUnit::Réaumur), -391.67f64 * 4f64 / 9f64 * 10f64);
         assert_eq!(one_hundred_rankine.to(Prefix::Deci, TemperatureUnit::Rømer), (-391.67f64 * 7f64 / 24f64 + 7.5f64) * 10f64);
-        assert_eq!(one_hundred_rankine.to(Prefix::None, TemperatureUnit::Delisle), 2858.35f64 / 6f64);
+        assert_almost_eq!(one_hundred_rankine.to(Prefix::None, TemperatureUnit::Delisle), 2858.35f64 / 6f64);
         
     }
 
@@ -239,14 +288,14 @@ mod tests {
     fn conversion_from_rømer_works() {
         let one_hundred_rømer = TemperatureMeasurement::from(1f64, Prefix::Hecto, TemperatureUnit::Rømer);
 
-        assert_eq!(one_hundred_rømer.to(Prefix::Deci, TemperatureUnit::Celsius), (92.5f64 * 40f64 / 21f64) * 10f64);
-        assert_eq!(one_hundred_rømer.to(Prefix::Deci, TemperatureUnit::Fahrenheit), (92.5f64 * 24f64 / 7f64 + 32f64) * 10f64);
+        assert_almost_eq!(one_hundred_rømer.to(Prefix::Deci, TemperatureUnit::Celsius), (92.5f64 * 40f64 / 21f64) * 10f64);
+        assert_almost_eq!(one_hundred_rømer.to(Prefix::Deci, TemperatureUnit::Fahrenheit), (92.5f64 * 24f64 / 7f64 + 32f64) * 10f64);
         assert_almost_eq!(one_hundred_rømer.to(Prefix::Deci, TemperatureUnit::Rømer), 1000f64);
-        assert_eq!(one_hundred_rømer.to(Prefix::Deci, TemperatureUnit::Rankine), (2220f64 / 7f64 + 491.67f64) * 10f64);
+        assert_almost_eq!(one_hundred_rømer.to(Prefix::Deci, TemperatureUnit::Rankine), (2220f64 / 7f64 + 491.67f64) * 10f64);
         assert_almost_eq!(one_hundred_rømer.to(Prefix::Deci, TemperatureUnit::Newton), (3700f64 / 21f64) * 3.3f64);
         assert_eq!(one_hundred_rømer.to(Prefix::Deci, TemperatureUnit::Réaumur), 29600f64 / 21f64);
         assert_almost_eq!(one_hundred_rømer.to(Prefix::Deci, TemperatureUnit::Rømer), 1000f64);
-        assert_eq!(one_hundred_rømer.to(Prefix::Deci, TemperatureUnit::Delisle), (373.15f64 - (3700f64 / 21f64 + 273.15f64)) * 30f64 / 2f64);
+        assert_almost_eq!(one_hundred_rømer.to(Prefix::Deci, TemperatureUnit::Delisle), (373.15f64 - (3700f64 / 21f64 + 273.15f64)) * 30f64 / 2f64);
     }
 
     #[test]
@@ -258,7 +307,7 @@ mod tests {
         assert_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Kelvin), (10000f64 /33f64 + 273.15f64) * 10f64);
         assert_almost_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Rankine), ((100f64 * 60f64 / 11f64) + 491.67f64) * 10f64);
         assert_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Newton), 1000f64);
-        assert_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Réaumur), 80000f64 / 33f64);
+        assert_almost_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Réaumur), 80000f64 / 33f64);
         assert_almost_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Rømer), (10000f64 / 33f64 * 21f64 / 40f64 + 7.5f64) * 10f64);
         assert_eq!(one_hundred_newton.to(Prefix::Deci, TemperatureUnit::Delisle), 1500f64 - 150000f64 / 33f64);
     }

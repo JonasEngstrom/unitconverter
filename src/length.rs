@@ -3,6 +3,7 @@
 //! The base unit used to store lengthe in the `unitconverter` is meters.
 
 use crate::macros::*;
+use crate::formulas::*;
 
 /// # Units of Length
 /// 
@@ -28,26 +29,26 @@ pub enum LengthUnit {
 }
 
 impl LengthUnit {
-    doc_to_base_unit! {
-        pub(crate) fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+    doc_to_base_unit_formula! {
+        fn to_base_unit_formula(&self) -> Formula {
             match self {
-                LengthUnit::Meter => |x| x,
-                LengthUnit::Inch => |x| 0.025_4f64 * x,
-                LengthUnit::Foot => |x| 0.304_8f64 * x,
-                LengthUnit::Yard => |x| 0.914_4f64 * x,
-                LengthUnit::Mile => |x| 1_609.344f64 * x,
+                LengthUnit::Meter => Formula::Multiply{ scale: 1f64 },
+                LengthUnit::Inch => Formula::Multiply{ scale: 0.025_4f64 },
+                LengthUnit::Foot => Formula::Multiply{ scale: 0.304_8f64 },
+                LengthUnit::Yard => Formula::Multiply{ scale: 0.914_4f64 },
+                LengthUnit::Mile => Formula::Multiply{ scale: 1_609.344f64 },
             }
         }
     }
 
-    doc_from_base_unit! {
-        pub(crate) fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
+    doc_from_base_unit_formula! {
+        fn from_base_unit_formula(&self) -> Formula {
             match self {
-                LengthUnit::Meter => |x| x,
-                LengthUnit::Inch => |x| x / 0.025_4f64,
-                LengthUnit::Foot => |x| x / 0.304_8f64,
-                LengthUnit::Yard => |x| x / 0.914_4f64,
-                LengthUnit::Mile => |x| x / 1_609.344f64,
+                LengthUnit::Meter => Formula::Divide{ scale: 1f64 },
+                LengthUnit::Inch => Formula::Divide{ scale: 0.025_4f64 },
+                LengthUnit::Foot => Formula::Divide{ scale: 0.304_8f64 },
+                LengthUnit::Yard => Formula::Divide{ scale: 0.914_4f64 },
+                LengthUnit::Mile => Formula::Divide{ scale: 1_609.344f64 },
             }
         }
     }
@@ -99,20 +100,20 @@ mod tests {
 
     #[test]
     fn to_base_units_are_correct() {
-        assert_eq!(LengthUnit::Meter.to_base_unit()(1f64), 1f64);
-        assert_eq!(LengthUnit::Inch.to_base_unit()(1f64), 0.0254f64);
-        assert_eq!(LengthUnit::Foot.to_base_unit()(1f64), 0.3048f64);
-        assert_eq!(LengthUnit::Yard.to_base_unit()(1f64), 0.9144f64);
-        assert_eq!(LengthUnit::Mile.to_base_unit()(1f64), 1_609.344f64);
+        assert_eq!(LengthUnit::Meter.to_base_unit(1f64), 1f64);
+        assert_eq!(LengthUnit::Inch.to_base_unit(1f64), 0.0254f64);
+        assert_eq!(LengthUnit::Foot.to_base_unit(1f64), 0.3048f64);
+        assert_eq!(LengthUnit::Yard.to_base_unit(1f64), 0.9144f64);
+        assert_eq!(LengthUnit::Mile.to_base_unit(1f64), 1_609.344f64);
     }
 
     #[test]
     fn from_base_units_are_correct() {
-        assert_eq!(LengthUnit::Meter.from_base_unit()(1f64), 1f64);
-        assert_eq!(LengthUnit::Inch.from_base_unit()(0.0254f64), 1f64);
-        assert_eq!(LengthUnit::Foot.from_base_unit()(0.3048f64), 1f64);
-        assert_eq!(LengthUnit::Yard.from_base_unit()(0.9144f64), 1f64);
-        assert_eq!(LengthUnit::Mile.from_base_unit()(1_609.344f64), 1f64);
+        assert_eq!(LengthUnit::Meter.from_base_unit(1f64), 1f64);
+        assert_eq!(LengthUnit::Inch.from_base_unit(0.0254f64), 1f64);
+        assert_eq!(LengthUnit::Foot.from_base_unit(0.3048f64), 1f64);
+        assert_eq!(LengthUnit::Yard.from_base_unit(0.9144f64), 1f64);
+        assert_eq!(LengthUnit::Mile.from_base_unit(1_609.344f64), 1f64);
     }
 
     #[test]

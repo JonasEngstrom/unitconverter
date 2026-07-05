@@ -2,6 +2,7 @@
 #![warn(missing_docs)]
 
 mod macros;
+mod formulas;
 
 pub mod constants;
 pub mod time;
