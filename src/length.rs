@@ -54,37 +54,37 @@ impl LengthUnit {
     }
 
     doc_name_singular! {
-        pub fn name_singular(&self) -> &str {
+        pub fn name_singular(&self) -> String {
             match self {
-                LengthUnit::Meter => "meter",
-                LengthUnit::Inch => "inch",
-                LengthUnit::Foot => "foot",
-                LengthUnit::Yard => "yard",
-                LengthUnit::Mile => "mile",
+                LengthUnit::Meter => "meter".to_string(),
+                LengthUnit::Inch => "inch".to_string(),
+                LengthUnit::Foot => "foot".to_string(),
+                LengthUnit::Yard => "yard".to_string(),
+                LengthUnit::Mile => "mile".to_string(),
             }
         }
     }
 
     doc_name_plural! {
-        pub fn name_plural(&self) -> &str {
+        pub fn name_plural(&self) -> String {
             match self {
-                LengthUnit::Meter => "meters",
-                LengthUnit::Inch => "inches",
-                LengthUnit::Foot => "feet",
-                LengthUnit::Yard => "yards",
-                LengthUnit::Mile => "miles",
+                LengthUnit::Meter => "meters".to_string(),
+                LengthUnit::Inch => "inches".to_string(),
+                LengthUnit::Foot => "feet".to_string(),
+                LengthUnit::Yard => "yards".to_string(),
+                LengthUnit::Mile => "miles".to_string(),
             }
         }
     }
 
     doc_symbol! {
-        pub fn symbol(&self) -> &str {
+        pub fn symbol(&self) -> String {
             match self {
-                LengthUnit::Meter => "m",
-                LengthUnit::Inch => "in",
-                LengthUnit::Foot => "ft",
-                LengthUnit::Yard => "yd",
-                LengthUnit::Mile => "mi",
+                LengthUnit::Meter => "m".to_string(),
+                LengthUnit::Inch => "in".to_string(),
+                LengthUnit::Foot => "ft".to_string(),
+                LengthUnit::Yard => "yd".to_string(),
+                LengthUnit::Mile => "mi".to_string(),
             }
         }
     }

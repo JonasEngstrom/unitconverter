@@ -47,34 +47,34 @@ impl TimeUnit {
     }
 
     doc_name_singular! {
-        pub fn name_singular(&self) -> &str {
+        pub fn name_singular(&self) -> String {
             match self {
-                TimeUnit::Second => "second",
-                TimeUnit::Minute => "minute",
-                TimeUnit::Hour => "hour",
-                TimeUnit::Day => "day",
+                TimeUnit::Second => "second".to_string(),
+                TimeUnit::Minute => "minute".to_string(),
+                TimeUnit::Hour => "hour".to_string(),
+                TimeUnit::Day => "day".to_string(),
             }
         }
     }
 
     doc_name_plural! {
-        pub fn name_plural(&self) -> &str {
+        pub fn name_plural(&self) -> String {
             match self {
-                TimeUnit::Second => "seconds",
-                TimeUnit::Minute => "minutes",
-                TimeUnit::Hour => "hours",
-                TimeUnit::Day => "days",
+                TimeUnit::Second => "seconds".to_string(),
+                TimeUnit::Minute => "minutes".to_string(),
+                TimeUnit::Hour => "hours".to_string(),
+                TimeUnit::Day => "days".to_string(),
             }
         }
     }
 
     doc_symbol! {
-        pub fn symbol(&self) -> &str {
+        pub fn symbol(&self) -> String {
             match self {
-                TimeUnit::Second => "s",
-                TimeUnit::Minute => "min",
-                TimeUnit::Hour => "h",
-                TimeUnit::Day => "d",
+                TimeUnit::Second => "s".to_string(),
+                TimeUnit::Minute => "min".to_string(),
+                TimeUnit::Hour => "h".to_string(),
+                TimeUnit::Day => "d".to_string(),
             }
         }
     }

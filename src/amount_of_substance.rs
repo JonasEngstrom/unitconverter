@@ -35,25 +35,25 @@ impl AmountOfSubstanceUnit {
     }
 
     doc_name_singular! {
-        pub fn name_singular(&self) -> &str {
+        pub fn name_singular(&self) -> String {
             match self {
-                AmountOfSubstanceUnit::Mole => "mole"
+                AmountOfSubstanceUnit::Mole => "mole".to_string(),
             }
         }
     }
 
     doc_name_plural! {
-        pub fn name_plural(&self) -> &str {
+        pub fn name_plural(&self) -> String {
             match self {
-                AmountOfSubstanceUnit::Mole => "moles"
+                AmountOfSubstanceUnit::Mole => "moles".to_string(),
             }
         }
     }
 
     doc_symbol! {
-        pub fn symbol(&self) -> &str {
+        pub fn symbol(&self) -> String {
             match self {
-                AmountOfSubstanceUnit::Mole => "mol"
+                AmountOfSubstanceUnit::Mole => "mol".to_string(),
             }
         }
     }

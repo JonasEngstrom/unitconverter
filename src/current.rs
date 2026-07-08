@@ -35,25 +35,25 @@ impl CurrentUnit {
     }
 
     doc_name_singular! {
-        pub fn name_singular(&self) -> &str {
+        pub fn name_singular(&self) -> String {
             match self {
-                CurrentUnit::Ampere => "ampere",
+                CurrentUnit::Ampere => "ampere".to_string(),
             }
         }
     }
 
     doc_name_plural! {
-        pub fn name_plural(&self) -> &str {
+        pub fn name_plural(&self) -> String {
             match self {
-                CurrentUnit::Ampere => "amperes",
+                CurrentUnit::Ampere => "amperes".to_string(),
             }
         }
     }
 
     doc_symbol! {
-        pub fn symbol(&self) -> &str {
+        pub fn symbol(&self) -> String {
             match self {
-                CurrentUnit::Ampere => "A",
+                CurrentUnit::Ampere => "A".to_string(),
             }
         }
     }

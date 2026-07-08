@@ -3,8 +3,8 @@
 //! The base unit used to store area in the `unitconverter` crate is square meters.
 
 use crate::macros::*;
+use crate::formulas::*;
 
-use si_prefixes::Prefix;
 use crate::length::LengthUnit;
 
 /// # Units of Area
@@ -21,103 +21,119 @@ pub enum AreaUnit {
     Square(Prefix, LengthUnit),
 }
 
-// impl AreaUnit {
-//     doc_to_base_unit! {
-//         fn to_base_unit(&self) -> impl FnOnce(f64) -> f64 {
-//             match self {
-//                 AreaUnit::Are => |x| 100f64 * x,
-//                 AreaUnit::Square(prefix, unit) => {
-//                     let factor = unit
-//                         .to_base_unit()(Prefix::conversion_constant(&prefix, &Prefix::None))
-//                         .powi(2);
+impl AreaUnit {
+    doc_to_base_unit_formula! {
+        fn to_base_unit_formula(&self) -> Formula {
+            match self {
+                AreaUnit::Are => Formula::Multiply{ scale: 100f64 },
+                AreaUnit::Square(prefix, unit) => {
+                    Formula::Multiply{
+                        scale: unit
+                            .to_base_unit(Prefix::conversion_constant(&prefix, &Prefix::None))
+                            .powi(2)
+                    }
+                },
+            }
+        }
+    }
 
-//                     move |x| factor * x
-//                 },
-//             }
-//         }
-//     }
+    doc_from_base_unit_formula! {
+        fn from_base_unit_formula(&self) -> Formula {
+            match self {
+                AreaUnit::Are => Formula::Divide{ scale: 100f64 },
+                AreaUnit::Square(prefix, unit) => {
+                    Formula::Divide{
+                        scale: unit
+                            .to_base_unit(Prefix::conversion_constant(&prefix, &Prefix::None))
+                            .powi(2)
+                    }
+                },
+            }
+        }
+    }
 
-//     doc_from_base_unit! {
-//         fn from_base_unit(&self) -> impl FnOnce(f64) -> f64 {
-//             match self {
-//                 AreaUnit::Are => |x| x / 100f64,
-//                 AreaUnit::Square(prefix, unit) => {
-//                     let factor = unit
-//                         .to_base_unit()(Prefix::conversion_constant(&prefix, &Prefix::None))
-//                         .powi(2);
-                    
-//                     move |x| x / factor
-//                 }
-//             }
-//         }
-//     }
-// }
+    doc_name_singular! {
+        fn name_singular(&self) -> String {
+            match self {
+                AreaUnit::Are => "are".to_string(),
+                AreaUnit::Square(prefix, unit) => {
+                    let prefix_name = match prefix.name() {
+                        Some(name) => name,
+                        None => "",
+                    };
+                    format!("square {}{}", prefix_name, unit.name_singular())
+                },
+            }
+        }
+    }
 
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
+    doc_name_plural! {
+        fn name_plural(&self) -> String {
+            match self {
+                AreaUnit::Are => "ares".to_string(),
+                AreaUnit::Square(prefix, unit) => {
+                    let prefix_name = match prefix.name() {
+                        Some(name) => name,
+                        None => "",
+                    };
+                    format!("square {}{}", prefix_name, unit.name_plural())
+                },
+            }
+        }
+    }
 
-//     #[test]
-//     fn square_meter_to_base_unit_works() {
-//         let square_meter_unit = AreaUnit::Square(Prefix::None, LengthUnit::Meter);
-//         let one_square_meter = square_meter_unit.to_base_unit()(1f64);
+    doc_symbol! {
+        fn symbol(&self) -> String {
+            match self {
+                AreaUnit::Are => "a".to_string(),
+                AreaUnit::Square(prefix, unit) => {
+                    let prefix_name = match prefix.symbol() {
+                        Some(symbol) => symbol,
+                        None => "",
+                    };
+                    format!("{}{}²", prefix_name, unit.symbol())
+                }
+            }
+        }
+    }
+}
 
-//         assert_eq!(one_square_meter, 1f64);
-//     }
+impl_measurement!(AreaMeasurement, AreaUnit);
 
-//     #[test]
-//     fn square_kilometer_to_base_unit_works() {
-//         let square_kilometer_unit = AreaUnit::Square(Prefix::Kilo, LengthUnit::Meter);
-//         let one_square_kilometer = square_kilometer_unit.to_base_unit()(1f64);
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-//         assert_eq!(one_square_kilometer, 1_000_000f64);
-//     }
+    #[test]
+    fn to_base_units_are_correct() {
+        assert_eq!(AreaUnit::Square(Prefix::Kilo, LengthUnit::Meter).to_base_unit(1f64), 1e6f64);
+        assert_eq!(AreaUnit::Are.to_base_unit(1f64), 1e2f64);
+    }
 
-//     #[test]
-//     fn square_centimeter_to_base_unit_works() {
-//         let square_centimeter_unit = AreaUnit::Square(Prefix::Centi, LengthUnit::Meter);
-//         let one_square_centimeter = square_centimeter_unit.to_base_unit()(1f64);
+    #[test]
+    fn from_base_units_are_correct() {
+        assert_eq!(AreaUnit::Square(Prefix::Kilo, LengthUnit::Meter).from_base_unit(1e6f64), 1f64);
+        assert_eq!(AreaUnit::Are.from_base_unit(1e2f64), 1f64);
+    }
 
-//         assert_eq!(one_square_centimeter, 0.0001f64);
-//     }
+    #[test]
+    fn singular_names_are_correct() {
+        assert_eq!(AreaUnit::Are.name_singular(), "are");
+        assert_eq!(AreaUnit::Square(Prefix::None, LengthUnit::Inch).name_singular(), "square inch");
+        assert_eq!(AreaUnit::Square(Prefix::Kilo, LengthUnit::Meter).name_singular(), "square kilometer");
+    }
 
-//     #[test]
-//     fn square_foot_to_base_unit_works() {
-//         let square_foot_unit = AreaUnit::Square(Prefix::None, LengthUnit::Foot);
-//         let one_square_foot = square_foot_unit.to_base_unit()(1f64);
+    #[test]
+    fn plural_names_are_correct() {
+        assert_eq!(AreaUnit::Are.name_plural(), "ares");
+        assert_eq!(AreaUnit::Square(Prefix::None, LengthUnit::Inch).name_plural(), "square inches");
+        assert_eq!(AreaUnit::Square(Prefix::Kilo, LengthUnit::Meter).name_plural(), "square kilometers");
+    }
 
-//         assert_eq!(one_square_foot, 0.092_903_04f64);
-//     }
-
-//     #[test]
-//     fn square_meter_from_base_unit_works() {
-//         let square_meter_unit = AreaUnit::Square(Prefix::None, LengthUnit::Meter);
-//         let one_square_meter = square_meter_unit.from_base_unit()(1f64);
-
-//         assert_eq!(one_square_meter, 1f64);
-//     }
-
-//     #[test]
-//     fn square_kilometer_from_base_unit_works() {
-//         let square_kilometer_unit = AreaUnit::Square(Prefix::Kilo, LengthUnit::Meter);
-//         let one_square_kilometer = square_kilometer_unit.from_base_unit()(1_000_000f64);
-
-//         assert_eq!(one_square_kilometer, 1f64);
-//     }
-
-//     #[test]
-//     fn square_centimeter_from_base_unit_works() {
-//         let square_centimeter_unit = AreaUnit::Square(Prefix::Centi, LengthUnit::Meter);
-//         let one_square_centimeter = square_centimeter_unit.from_base_unit()(1f64);
-
-//         assert_eq!(one_square_centimeter, 10_000f64);
-//     }
-
-//     #[test]
-//     fn square_foot_from_base_unit_works() {
-//         let square_foot_unit = AreaUnit::Square(Prefix::None, LengthUnit::Foot);
-//         let one_square_foot = square_foot_unit.from_base_unit()(0.092_903_04f64);
-
-//         assert_eq!(one_square_foot, 1f64);
-//     }
-// }
+    #[test]
+    fn symbols_are_correct() {
+        assert_eq!(AreaUnit::Are.symbol(), "a");
+        assert_eq!(AreaUnit::Square(Prefix::None, LengthUnit::Inch).symbol(), "in²");
+        assert_eq!(AreaUnit::Square(Prefix::Kilo, LengthUnit::Meter).symbol(), "km²");
+    }
+}

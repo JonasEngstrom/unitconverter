@@ -41,28 +41,28 @@ impl MassUnit {
     }
 
     doc_name_singular! {
-        pub fn name_singular(&self) -> &str {
+        pub fn name_singular(&self) -> String {
             match self {
-                MassUnit::Gram => "gram",
-                MassUnit::Pound => "pound",
+                MassUnit::Gram => "gram".to_string(),
+                MassUnit::Pound => "pound".to_string(),
             }
         }
     }
 
     doc_name_plural! {
-        pub fn name_plural(&self) -> &str {
+        pub fn name_plural(&self) -> String {
             match self {
-                MassUnit::Gram => "grams",
-                MassUnit::Pound => "pounds"
+                MassUnit::Gram => "grams".to_string(),
+                MassUnit::Pound => "pounds".to_string(),
             }
         }
     }
 
     doc_symbol! {
-        pub fn symbol(&self) -> &str {
+        pub fn symbol(&self) -> String {
             match self {
-                MassUnit::Gram => "g",
-                MassUnit::Pound => "lb",
+                MassUnit::Gram => "g".to_string(),
+                MassUnit::Pound => "lb".to_string(),
             }
         }
     }

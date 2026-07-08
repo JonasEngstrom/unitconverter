@@ -35,25 +35,25 @@ impl LuminousIntensityUnit {
     }
 
     doc_name_singular! {
-        pub fn name_singular(&self) -> &str {
+        pub fn name_singular(&self) -> String {
             match self {
-                LuminousIntensityUnit::Candela => "candela"
+                LuminousIntensityUnit::Candela => "candela".to_string(),
             }
         }
     }
 
     doc_name_plural! {
-        pub fn name_plural(&self) -> &str {
+        pub fn name_plural(&self) -> String {
             match self {
-                LuminousIntensityUnit::Candela => "candela"
+                LuminousIntensityUnit::Candela => "candela".to_string(),
             }
         }
     }
 
     doc_symbol! {
-        pub fn symbol(&self) -> &str {
+        pub fn symbol(&self) -> String {
             match self {
-                LuminousIntensityUnit::Candela => "cd"
+                LuminousIntensityUnit::Candela => "cd".to_string(),
             }
         }
     }

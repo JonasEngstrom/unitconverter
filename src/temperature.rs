@@ -117,46 +117,46 @@ impl TemperatureUnit {
     }
 
     doc_name_singular! {
-        pub fn name_singular(&self) -> &str {
+        pub fn name_singular(&self) -> String {
             match self {
-                TemperatureUnit::Kelvin => "kelvin",
-                TemperatureUnit::Celsius => "degree Celsius",
-                TemperatureUnit::Fahrenheit => "degree Fahrenheit",
-                TemperatureUnit::Rankine => "degree Rankine",
-                TemperatureUnit::Réaumur => "degree Réaumur",
-                TemperatureUnit::Rømer => "degree Rømer",
-                TemperatureUnit::Newton => "degree Newton",
-                TemperatureUnit::Delisle => "degree Delisle",
+                TemperatureUnit::Kelvin => "kelvin".to_string(),
+                TemperatureUnit::Celsius => "degree Celsius".to_string(),
+                TemperatureUnit::Fahrenheit => "degree Fahrenheit".to_string(),
+                TemperatureUnit::Rankine => "degree Rankine".to_string(),
+                TemperatureUnit::Réaumur => "degree Réaumur".to_string(),
+                TemperatureUnit::Rømer => "degree Rømer".to_string(),
+                TemperatureUnit::Newton => "degree Newton".to_string(),
+                TemperatureUnit::Delisle => "degree Delisle".to_string(),
             }
         }
     }
     
     doc_name_plural! {
-        pub fn name_plural(&self) -> &str {
+        pub fn name_plural(&self) -> String {
             match self {
-                TemperatureUnit::Kelvin => "kelvin",
-                TemperatureUnit::Celsius => "degrees Celsius",
-                TemperatureUnit::Fahrenheit => "degrees Fahrenheit",
-                TemperatureUnit::Rankine => "degrees Rankine",
-                TemperatureUnit::Réaumur => "degrees Réaumur",
-                TemperatureUnit::Rømer => "degrees Rømer",
-                TemperatureUnit::Newton => "degrees Newton",
-                TemperatureUnit::Delisle => "degrees Delisle",
+                TemperatureUnit::Kelvin => "kelvin".to_string(),
+                TemperatureUnit::Celsius => "degrees Celsius".to_string(),
+                TemperatureUnit::Fahrenheit => "degrees Fahrenheit".to_string(),
+                TemperatureUnit::Rankine => "degrees Rankine".to_string(),
+                TemperatureUnit::Réaumur => "degrees Réaumur".to_string(),
+                TemperatureUnit::Rømer => "degrees Rømer".to_string(),
+                TemperatureUnit::Newton => "degrees Newton".to_string(),
+                TemperatureUnit::Delisle => "degrees Delisle".to_string(),
             }
         }
     }
     
     doc_symbol! {
-        pub fn symbol(&self) -> &str {
+        pub fn symbol(&self) -> String {
             match self {
-                TemperatureUnit::Kelvin => "K",
-                TemperatureUnit::Celsius => "°C",
-                TemperatureUnit::Fahrenheit => "°F",
-                TemperatureUnit::Rankine => "°Ra",
-                TemperatureUnit::Réaumur => "°Ré",
-                TemperatureUnit::Rømer => "°Rø",
-                TemperatureUnit::Newton => "°N",
-                TemperatureUnit::Delisle => "°De",
+                TemperatureUnit::Kelvin => "K".to_string(),
+                TemperatureUnit::Celsius => "°C".to_string(),
+                TemperatureUnit::Fahrenheit => "°F".to_string(),
+                TemperatureUnit::Rankine => "°Ra".to_string(),
+                TemperatureUnit::Réaumur => "°Ré".to_string(),
+                TemperatureUnit::Rømer => "°Rø".to_string(),
+                TemperatureUnit::Newton => "°N".to_string(),
+                TemperatureUnit::Delisle => "°De".to_string(),
             }
         }
     }
