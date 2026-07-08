@@ -95,7 +95,7 @@ macro_rules! impl_measurement {
 
 pub(crate) use impl_measurement;
 
-macro_rules! impl_multiplication {
+macro_rules! impl_square_multiplication {
     ($factor_measurement_type: ty, $product_measurement_type: ident) => {
         use std::ops::{ Mul, Div };
 
@@ -117,7 +117,7 @@ macro_rules! impl_multiplication {
     }
 }
 
-pub(crate) use impl_multiplication;
+pub(crate) use impl_square_multiplication;
 
 macro_rules! doc_to_base_unit_formula {
     ($to_base_unit_formula: item) => {

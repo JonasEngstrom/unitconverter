@@ -99,7 +99,7 @@ impl AreaUnit {
 }
 
 impl_measurement!(AreaMeasurement, AreaUnit);
-impl_multiplication!(LengthMeasurement, AreaMeasurement);
+impl_square_multiplication!(LengthMeasurement, AreaMeasurement);
 
 #[cfg(test)]
 mod tests {
