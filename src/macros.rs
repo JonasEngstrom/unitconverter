@@ -51,15 +51,23 @@ macro_rules! impl_measurement {
             pub fn to(&self, prefix: Prefix, unit: $unit_type) -> f64 {
                 Prefix::conversion_constant(&Prefix::None, &prefix) * unit.from_base_unit(self.value)
             }
+
+            /// Make new measurement, by setting value directly. Only used internally for arithmetic.
+            pub(crate) fn new_from_value(value: f64) -> Self {
+                Self{ value }
+            }
+
+            /// Get value directly. Only used internally for arithmetic.
+            pub(crate) fn get_value(&self) -> f64 {
+                self.value
+            }
         }
 
         impl Add for $measurement_identifier {
             type Output = Self;
 
             fn add(self, other: Self) -> Self {
-                Self {
-                    value: self.value + other.value,
-                }
+                Self::new_from_value(self.get_value() + other.get_value())
             }
         }
 
@@ -67,31 +75,49 @@ macro_rules! impl_measurement {
             type Output = Self;
 
             fn sub(self, other: Self) -> Self {
-                Self {
-                    value: self.value - other.value,
-                }
+                Self::new_from_value(self.get_value() - other.get_value())
             }
         }
 
         impl AddAssign for $measurement_identifier {
             fn add_assign(&mut self, other: Self) {
-                *self = Self {
-                    value: self.value + other.value,
-                };
+                *self = Self::new_from_value(self.get_value() + other.get_value());
             }
         }
 
         impl SubAssign for $measurement_identifier {
             fn sub_assign(&mut self, other: Self) {
-                *self = Self {
-                    value: self.value - other.value,
-                };
+                *self = Self::new_from_value(self.get_value() - other.get_value());
             }
         }
     }
 }
 
 pub(crate) use impl_measurement;
+
+macro_rules! impl_multiplication {
+    ($factor_measurement_type: ty, $product_measurement_type: ident) => {
+        use std::ops::{ Mul, Div };
+
+        impl Mul for $factor_measurement_type {
+            type Output = $product_measurement_type;
+
+            fn mul(self, other: Self) -> $product_measurement_type {
+                $product_measurement_type::new_from_value(self.get_value() * other.get_value())
+            }
+        }
+
+        impl Div<$factor_measurement_type> for $product_measurement_type {
+            type Output = $factor_measurement_type;
+
+            fn div(self, rhs: $factor_measurement_type) -> $factor_measurement_type {
+                <$factor_measurement_type>::new_from_value(self.get_value() / rhs.get_value())
+            }
+        }
+    }
+}
+
+pub(crate) use impl_multiplication;
 
 macro_rules! doc_to_base_unit_formula {
     ($to_base_unit_formula: item) => {

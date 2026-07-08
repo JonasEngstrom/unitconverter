@@ -5,7 +5,7 @@
 use crate::macros::*;
 use crate::formulas::*;
 
-use crate::length::LengthUnit;
+use crate::length::{ LengthUnit, LengthMeasurement };
 
 /// # Units of Area
 /// 
@@ -53,7 +53,7 @@ impl AreaUnit {
     }
 
     doc_name_singular! {
-        fn name_singular(&self) -> String {
+        pub fn name_singular(&self) -> String {
             match self {
                 AreaUnit::Are => "are".to_string(),
                 AreaUnit::Square(prefix, unit) => {
@@ -68,7 +68,7 @@ impl AreaUnit {
     }
 
     doc_name_plural! {
-        fn name_plural(&self) -> String {
+        pub fn name_plural(&self) -> String {
             match self {
                 AreaUnit::Are => "ares".to_string(),
                 AreaUnit::Square(prefix, unit) => {
@@ -83,7 +83,7 @@ impl AreaUnit {
     }
 
     doc_symbol! {
-        fn symbol(&self) -> String {
+        pub fn symbol(&self) -> String {
             match self {
                 AreaUnit::Are => "a".to_string(),
                 AreaUnit::Square(prefix, unit) => {
@@ -99,6 +99,7 @@ impl AreaUnit {
 }
 
 impl_measurement!(AreaMeasurement, AreaUnit);
+impl_multiplication!(LengthMeasurement, AreaMeasurement);
 
 #[cfg(test)]
 mod tests {
@@ -135,5 +136,23 @@ mod tests {
         assert_eq!(AreaUnit::Are.symbol(), "a");
         assert_eq!(AreaUnit::Square(Prefix::None, LengthUnit::Inch).symbol(), "in²");
         assert_eq!(AreaUnit::Square(Prefix::Kilo, LengthUnit::Meter).symbol(), "km²");
+    }
+
+    #[test]
+    fn multiplication_of_area_measurements_work() {
+        let length_measurement_one = LengthMeasurement::from(1f64, Prefix::Kilo, LengthUnit::Meter);
+        let length_measurement_two = LengthMeasurement::from(1f64, Prefix::None, LengthUnit::Yard);
+        let area_measurement = length_measurement_one * length_measurement_two;
+
+        assert_eq!(area_measurement.to(Prefix::None, AreaUnit::Square(Prefix::None, LengthUnit::Meter)), 914.4f64);
+    }
+
+    #[test]
+    fn division_of_area_measurement_with_length_measurement_works() {
+        let area_measurement = AreaMeasurement::from(914.4f64, Prefix::None, AreaUnit::Square(Prefix::None, LengthUnit::Meter));
+        let length_measurement_one = LengthMeasurement::from(1f64, Prefix::None, LengthUnit::Yard);
+        let length_measurement_two = area_measurement / length_measurement_one;
+
+        assert_eq!(length_measurement_two.to(Prefix::Kilo, LengthUnit::Meter), 1f64);
     }
 }
