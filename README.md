@@ -6,11 +6,163 @@
 
 Unit converter strives to employ a consistent interface for conversion between units of different dimensions. It is based around the units and the prefixes of the SI system but includes regional and historical units as well.
 
+## Usage
+
+This section gives a few examples on how to use the crate. For a more detailed description of the underlying design, see the [Convetions](#conventions) section below. Supported units are listed in the [Supported Units](#supported-units) section. Supported prefixes are listed in the [`si-prefixes` crate](https://crates.io/crates/si-prefixes) documentation.
+
+Usage of the crate revolves around storing measurements of different quantities in variables. The stored measurements can then either be converted to other units or used in arithmetic operations, that may yield measurements in other dimensions—e.g. a length measurement times another length measurement becomes an area measurement.
+
+### Storing a Measurement in a Variable
+
+When storing a measurement, the `::from()` method is used.
+
+```rust
+use unitconverter::mass::{ MassUnit, MassMeasurement };
+use si_prefixes::Prefix;
+
+let one_pound = MassMeasurement::from(1f64, Prefix::None, MassUnit::Pound);
+```
+
+### Converting a Stored Measurement to Another Unit
+
+When converting a stored variable to another unti, the `.to()` method is used.
+
+```rust
+use unitconverter::mass::{ MassUnit, MassMeasurement };
+use si_prefixes::Prefix;
+
+let one_pound = MassMeasurement::from(1f64, Prefix::None, MassUnit::Pound);
+
+let one_pound_in_kilograms = one_pound.to(Prefix::Kilo, MassUnit::Gram);
+
+assert_eq!(one_pound_in_kilograms, 0.453_592_37f64);
+```
+
+### Derived Units
+
+Some units are derived from other units. Which ones are described in the [Supported Units](#supported-units) section.
+
+```rust
+use unitconverter::length::{ LengthUnit };
+use unitconverter::area::{ AreaUnit, AreaMeasurement };
+use si_prefixes::Prefix;
+
+let thousand_square_meters = AreaMeasurement::from(
+    1_000f64,
+    Prefix::None,
+    AreaUnit::Square(Prefix::None, LengthUnit::Meter)
+);
+
+let hectares = thousand_square_meters.to(Prefix::Hecto, AreaUnit::Are);
+
+assert_eq!(hectares, 0.1f64);
+```
+
+### Arithmetic
+
+#### Sums and Differences
+
+All measurements support addition and subtracts, as well as the `AddAssign` and the `SubAssign` operators.
+
+##### Addition
+
+```rust
+use unitconverter::time::{ TimeUnit, TimeMeasurement };
+use si_prefixes::Prefix;
+
+let two_minutes = TimeMeasurement::from(2f64, Prefix::None, TimeUnit::Minute);
+let sixty_seconds = TimeMeasurement::from(60f64, Prefix::None, TimeUnit::Second);
+
+let three_minutes = two_minutes + sixty_seconds;
+
+assert_eq!(three_minutes.to(Prefix::None, TimeUnit::Minute), 3f64);
+```
+
+```rust
+use unitconverter::time::{ TimeUnit, TimeMeasurement };
+use si_prefixes::Prefix;
+
+let mut a_number_of_minutes = TimeMeasurement::from(2f64, Prefix::None, TimeUnit::Minute);
+let sixty_seconds = TimeMeasurement::from(60f64, Prefix::None, TimeUnit::Second);
+
+a_number_of_minutes += sixty_seconds;
+
+assert_eq!(a_number_of_minutes.to(Prefix::None, TimeUnit::Minute), 3f64);
+```
+
+##### Subtraction
+
+```rust
+use unitconverter::time::{ TimeUnit, TimeMeasurement };
+use si_prefixes::Prefix;
+
+let two_minutes = TimeMeasurement::from(2f64, Prefix::None, TimeUnit::Minute);
+let sixty_seconds = TimeMeasurement::from(60f64, Prefix::None, TimeUnit::Second);
+
+let one_minute = two_minutes - sixty_seconds;
+
+assert_eq!(one_minute.to(Prefix::None, TimeUnit::Minute), 1f64);
+```
+
+```rust
+use unitconverter::time::{ TimeUnit, TimeMeasurement };
+use si_prefixes::Prefix;
+
+let mut a_number_of_minutes = TimeMeasurement::from(2f64, Prefix::None, TimeUnit::Minute);
+let sixty_seconds = TimeMeasurement::from(60f64, Prefix::None, TimeUnit::Second);
+
+a_number_of_minutes -= sixty_seconds;
+
+assert_eq!(a_number_of_minutes.to(Prefix::None, TimeUnit::Minute), 1f64);
+```
+
+#### Products and Quotients
+
+Some units support multiplication and division. This changes the dimension, and hence the type, of the measurement. Therefore the `AddAssign` and the `SubAssign` operators are not supported.
+
+##### Multiplication
+
+```rust
+use unitconverter::length::{ LengthUnit, LengthMeasurement };
+use unitconverter::area::{ AreaUnit, AreaMeasurement };
+use si_prefixes::Prefix;
+
+let one_hundred_meters = LengthMeasurement::from(100f64, Prefix::None, LengthUnit::Meter);
+let one_tenth_of_a_kilometer = LengthMeasurement::from(0.1f64, Prefix::Kilo, LengthUnit::Meter);
+
+let one_hectare = one_hundred_meters * one_tenth_of_a_kilometer;
+
+assert_eq!(one_hectare.to(Prefix::Hecto, AreaUnit::Are), 1f64);
+```
+
+##### Division
+
+```rust
+use unitconverter::length::{ LengthUnit, LengthMeasurement };
+use unitconverter::area::{ AreaUnit, AreaMeasurement };
+use si_prefixes::Prefix;
+
+let one_hectare = AreaMeasurement::from(1f64, Prefix::Hecto, AreaUnit::Are);
+let one_tenth_of_a_kilometer = LengthMeasurement::from(0.1f64, Prefix::Kilo, LengthUnit::Meter);
+
+let one_hundred_meters = one_hectare / one_tenth_of_a_kilometer;
+
+assert_eq!(one_hundred_meters.to(Prefix::None, LengthUnit::Meter), 100f64);
+```
+
 ## Conventions
 
-### Units Enums and Measurements Structs
+### Unit Enums and Measurement Structs
 
-The crate is built up around two different concepts, unit enums e.g. `LengthUnit` and measurement structs e.g. `LengthMeasurement`—prefixed with a quantity and suffixed with Unit or Measurement, as appropriate.
+The crate is built up around two different concepts, unit enums e.g. `LengthUnit` and measurement structs e.g. `LengthMeasurement`—prefixed with a quantity and suffixed with Unit or Measurement, as appropriate. The names are written with their initial letters capitalized (i.e. in “[camel case](https://en.wikipedia.org/wiki/Camel_case)”).
+
+### Module Names
+
+The module containing the [Unit Enum and Measurement Struct](#unit-enums-and-measurement-structs) pertaining to a quantity is named after the quantity in lower case with underscores separating the words (i.e. in “[snake case](https://en.wikipedia.org/wiki/Snake_case)”).
+
+```rust
+use unitconverter::luminous_intensity::{ LuminousIntensityUnit, LuminousIntensityMeasurement };
+```
 
 ### Measurement Struct `from` and `to` Methods
 
@@ -46,6 +198,72 @@ let one_kilometer = LengthMeasurement::from(1f64, Prefix::Kilo, LengthUnit::Mete
 let one_inch = LengthMeasurement::from(1f64, Prefix::None, LengthUnit::Inch);
 ```
 
+#### Double Prefixes
+
+As the [crate convention stipulates that all units can take a prefix](#prefixes) and certain units can be derived from other units (e.g. [area as a square of a length unit](#area)) which can in turn take its own prefix, some units can end up with two prefixes in the same unit. While not customary, double prefixing means more discrete units can be handled by the crate, as in the following example.
+
+```rust
+use si_prefixes::Prefix;
+use unitconverter::length::LengthUnit;
+use unitconverter::area::{ AreaUnit, AreaMeasurement };
+
+// One square meter is equal to one square meter.
+let one_square_meter = AreaMeasurement::from(
+    1f64,
+    Prefix::None,
+    AreaUnit::Square(Prefix::None, LengthUnit::Meter)
+);
+assert_eq!(
+    one_square_meter.to(
+        Prefix::None,
+        AreaUnit::Square(Prefix::None, LengthUnit::Meter)
+    ),
+    1f64
+);
+
+// One square kilometer is equal to 1,000,000 square meters.
+let one_square_kilometer = AreaMeasurement::from(
+    1f64,
+    Prefix::None,
+    AreaUnit::Square(Prefix::Kilo, LengthUnit::Meter)
+);
+assert_eq!(
+    one_square_kilometer.to(
+        Prefix::None,
+        AreaUnit::Square(Prefix::None, LengthUnit::Meter)
+    ),
+    1_000_000f64
+);
+
+// One kilo square meter is equal to 1,000 square meters.
+let one_kilo_square_meter = AreaMeasurement::from(
+    1f64,
+    Prefix::Kilo,
+    AreaUnit::Square(Prefix::None, LengthUnit::Meter)
+);
+assert_eq!(
+    one_kilo_square_meter.to(
+        Prefix::None,
+        AreaUnit::Square(Prefix::None, LengthUnit::Meter)
+    ),
+    1_000f64
+);
+
+// One kilo square kilometer is equal to 1,000,000,000 square meters.
+let one_kilo_square_kilometer = AreaMeasurement::from(
+    1f64,
+    Prefix::Kilo,
+    AreaUnit::Square(Prefix::Kilo, LengthUnit::Meter)
+);
+assert_eq!(
+    one_kilo_square_kilometer.to(
+        Prefix::None,
+        AreaUnit::Square(Prefix::None, LengthUnit::Meter)
+    ),
+    1_000_000_000f64
+);
+```
+
 ### Numeric Types Used
 
 Numbers used in the crate are stored as `f64`.
@@ -55,7 +273,7 @@ Numbers used in the crate are stored as `f64`.
 
 ### Pluralization
 
-Units are referred to in their singular form, e.g. foot instead of feet.
+Units are referred to by their name in singular form, e.g. foot instead of feet.
 
 ### Spelling
 
@@ -71,6 +289,7 @@ The base unit of amount of substance used in the `unitconverter` crate is moles.
 
 ### Area
 
+- Are
 - The square of any [`LengthUnit`](#length) including a prefix.
     ```rust
     use unitconverter::area::AreaUnit;
