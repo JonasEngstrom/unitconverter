@@ -95,7 +95,7 @@ macro_rules! impl_measurement {
 
 pub(crate) use impl_measurement;
 
-macro_rules! impl_square_multiplication {
+macro_rules! impl_square_multiplication_and_division {
     ($factor_measurement_type: ty, $product_measurement_type: ident) => {
         use std::ops::{ Mul, Div };
 
@@ -117,7 +117,47 @@ macro_rules! impl_square_multiplication {
     }
 }
 
-pub(crate) use impl_square_multiplication;
+pub(crate) use impl_square_multiplication_and_division;
+
+// macro_rules! impl_multiplication_and_division {
+//     ($factor_measurement_type_one: ty, $factor_measurement_type_two: ty, $product_measurement_type: ident) => {
+//         use std::ops::{ Mul, Div };
+
+//         impl Mul for $factor_measurement_type_one {
+//             type Output = $product_measurement_type;
+
+//             fn mul(self, rhs: $factor_measurement_type_two) -> $product_measurement_type {
+//                 $product_measurement_type::new_from_value(self.get_value() * rhs.get_value())
+//             }
+//         }
+
+//         // impl Mul for $factor_measurement_type_two {
+//         //     type Output = $product_measurement_type;
+
+//         //     fn mul(self, rhs: $factor_measurement_type_one) -> $product_measurement_type {
+//         //         $product_measurement_type::new_from_value(self.get_value() * rhs.get_value())
+//         //     }
+//         // }
+
+//         impl Div<$factor_measurement_type_one> for $product_measurement_type {
+//             type Output = $factor_measurement_type_two;
+
+//             fn div(self, rhs: $factor_measurement_type_one) -> $factor_measurement_type_two {
+//                 <$factor_measurement_type_two>::new_from_value(self.get_value() / rhs.get_value())
+//             }
+//         }
+
+//         // impl Div<$factor_measurement_type_two> for $product_measurement_type {
+//         //     type Output = $factor_measurement_type_one;
+
+//         //     fn div(self, rhs: $factor_measurement_type_two) -> $factor_measurement_type_one {
+//         //         <$factor_measurement_type_one>::new_from_value(self.get_value() / rhs.get_value())
+//         //     }
+//         // }
+//     }
+// }
+
+// pub(crate) use impl_multiplication_and_division;
 
 macro_rules! doc_to_base_unit_formula {
     ($to_base_unit_formula: item) => {

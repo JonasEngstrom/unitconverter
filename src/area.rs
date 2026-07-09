@@ -99,7 +99,7 @@ impl AreaUnit {
 }
 
 impl_measurement!(AreaMeasurement, AreaUnit);
-impl_square_multiplication!(LengthMeasurement, AreaMeasurement);
+impl_square_multiplication_and_division!(LengthMeasurement, AreaMeasurement);
 
 #[cfg(test)]
 mod tests {
@@ -136,6 +136,42 @@ mod tests {
         assert_eq!(AreaUnit::Are.symbol(), "a");
         assert_eq!(AreaUnit::Square(Prefix::None, LengthUnit::Inch).symbol(), "in²");
         assert_eq!(AreaUnit::Square(Prefix::Kilo, LengthUnit::Meter).symbol(), "km²");
+    }
+    
+    #[test]
+    fn addition_of_area_measurements_work() {
+        let measurement_one = AreaMeasurement::from(12f64, Prefix::None, AreaUnit::Square(Prefix::None, LengthUnit::Inch));
+        let measurement_two = AreaMeasurement::from(6f64, Prefix::None, AreaUnit::Square(Prefix::None, LengthUnit::Inch));
+        let sum = measurement_one + measurement_two;
+
+        assert_eq!(sum.to(Prefix::None, AreaUnit::Square(Prefix::None, LengthUnit::Inch)), 18f64);
+    }
+
+    #[test]
+    fn subtraction_of_area_measurements_work() {
+        let measurement_one = AreaMeasurement::from(12f64, Prefix::None, AreaUnit::Square(Prefix::None, LengthUnit::Inch));
+        let measurement_two = AreaMeasurement::from(6f64, Prefix::None, AreaUnit::Square(Prefix::None, LengthUnit::Inch));
+        let difference = measurement_one - measurement_two;
+
+        assert_eq!(difference.to(Prefix::None, AreaUnit::Square(Prefix::None, LengthUnit::Inch)), 6f64);
+    }
+
+        #[test]
+    fn addition_assign_of_area_measurements_work() {
+        let mut measurement_one = AreaMeasurement::from(12f64, Prefix::None, AreaUnit::Square(Prefix::None, LengthUnit::Inch));
+        let measurement_two = AreaMeasurement::from(6f64, Prefix::None, AreaUnit::Square(Prefix::None, LengthUnit::Inch));
+        measurement_one += measurement_two;
+
+        assert_eq!(measurement_one.to(Prefix::None, AreaUnit::Square(Prefix::None, LengthUnit::Inch)), 18f64);
+    }
+
+    #[test]
+    fn subtraction_assign_of_area_measurements_work() {
+        let mut measurement_one = AreaMeasurement::from(12f64, Prefix::None, AreaUnit::Square(Prefix::None, LengthUnit::Inch));
+        let measurement_two = AreaMeasurement::from(6f64, Prefix::None, AreaUnit::Square(Prefix::None, LengthUnit::Inch));
+        measurement_one -= measurement_two;
+
+        assert_eq!(measurement_one.to(Prefix::None, AreaUnit::Square(Prefix::None, LengthUnit::Inch)), 6f64);
     }
 
     #[test]
