@@ -353,3 +353,17 @@ The base unit of time used in the `unitconverter` crate is seconds.
 - Hour
 - Minute
 - Second
+
+### Volume
+
+- Liter
+- The cube of any [`LengthUnit`](#length) including a prefix.
+    ```rust
+    use unitconverter::volume::VolumeUnit;
+    use unitconverter::length::LengthUnit;
+    use si_prefixes::Prefix;
+
+    // Createing a custom cubic unit uses the VolumeUnit enum’s Cubic variant.
+    let cubic_kilometer_unit = VolumeUnit::Cubic(Prefix::Kilo, LengthUnit::Meter);
+    let cubic_inch_unit = VolumeUnit::Cubic(Prefix::None, LengthUnit::Inch);
+    ```
