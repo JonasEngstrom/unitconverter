@@ -138,7 +138,7 @@ mod tests {
     }
 
     #[test]
-    fn addition_of_area_measurements_work() {
+    fn addition_of_volume_measurements_work() {
         let measurement_one = VolumeMeasurement::from(1f64, Prefix::None, VolumeUnit::Cubic(Prefix::Deci, LengthUnit::Meter));
         let measurement_two = VolumeMeasurement::from(0.001f64, Prefix::None, VolumeUnit::Cubic(Prefix::None, LengthUnit::Meter));
         let sum = measurement_one + measurement_two;
@@ -147,7 +147,7 @@ mod tests {
     }
 
     #[test]
-    fn substraction_of_area_measurements_work() {
+    fn substraction_of_volume_measurements_work() {
         let measurement_one = VolumeMeasurement::from(1f64, Prefix::None, VolumeUnit::Cubic(Prefix::Deci, LengthUnit::Meter));
         let measurement_two = VolumeMeasurement::from(0.001f64, Prefix::None, VolumeUnit::Cubic(Prefix::None, LengthUnit::Meter));
         let difference = measurement_one - measurement_two;
@@ -156,7 +156,7 @@ mod tests {
     }
 
     #[test]
-    fn addition_assign_of_area_measurements_work() {
+    fn addition_assign_of_volume_measurements_work() {
         let mut measurement_one = VolumeMeasurement::from(1f64, Prefix::None, VolumeUnit::Cubic(Prefix::Deci, LengthUnit::Meter));
         let measurement_two = VolumeMeasurement::from(0.001f64, Prefix::None, VolumeUnit::Cubic(Prefix::None, LengthUnit::Meter));
         measurement_one += measurement_two;
@@ -165,7 +165,7 @@ mod tests {
     }
 
     #[test]
-    fn substractio_assign_of_area_measurements_work() {
+    fn substraction_assign_of_volume_measurements_work() {
         let mut measurement_one = VolumeMeasurement::from(1f64, Prefix::None, VolumeUnit::Cubic(Prefix::Deci, LengthUnit::Meter));
         let measurement_two = VolumeMeasurement::from(0.001f64, Prefix::None, VolumeUnit::Cubic(Prefix::None, LengthUnit::Meter));
         measurement_one -= measurement_two;
