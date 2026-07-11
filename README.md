@@ -293,10 +293,10 @@ The base unit of amount of substance used in the `unitconverter` crate is moles.
 
 The base unit of plane and phase angle used in the `unitconverter` crate is radians.
 
-- Radians
-- Degrees
-- Minutes
-- Seconds
+- Radian
+- Degree
+- Minute
+- Second
 
 ### Area
 
