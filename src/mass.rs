@@ -113,7 +113,7 @@ mod tests {
     }
 
     #[test]
-    fn addition_of_mass_measurements_work() {
+    fn addition_of_mass_measurements_works() {
         let measurement_one = MassMeasurement::from(2f64, Prefix::None, MassUnit::Pound);
         let measurement_two = MassMeasurement::from(1f64, Prefix::None, MassUnit::Pound);
         let sum = measurement_one + measurement_two;
@@ -122,7 +122,7 @@ mod tests {
     }
 
     #[test]
-    fn subtraction_of_mass_measurements_work() {
+    fn subtraction_of_mass_measurements_works() {
         let measurement_one = MassMeasurement::from(2f64, Prefix::None, MassUnit::Pound);
         let measurement_two = MassMeasurement::from(1f64, Prefix::None, MassUnit::Pound);
         let difference = measurement_one - measurement_two;
@@ -131,7 +131,7 @@ mod tests {
     }
 
     #[test]
-    fn addition_assign_of_mass_measurements_work() {
+    fn addition_assign_of_mass_measurements_works() {
         let mut measurement_one = MassMeasurement::from(2f64, Prefix::None, MassUnit::Pound);
         let measurement_two = MassMeasurement::from(1f64, Prefix::None, MassUnit::Pound);
         measurement_one += measurement_two;
@@ -140,7 +140,7 @@ mod tests {
     }
 
     #[test]
-    fn subtraction_assign_of_mass_measurements_work() {
+    fn subtraction_assign_of_mass_measurements_works() {
         let mut measurement_one = MassMeasurement::from(2f64, Prefix::None, MassUnit::Pound);
         let measurement_two = MassMeasurement::from(1f64, Prefix::None, MassUnit::Pound);
         measurement_one -= measurement_two;

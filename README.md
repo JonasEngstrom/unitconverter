@@ -287,6 +287,17 @@ The base unit of amount of substance used in the `unitconverter` crate is moles.
 
 - Mole
 
+### Angle
+
+#### Plane and Phase Angle
+
+The base unit of plane and phase angle used in the `unitconverter` crate is radians.
+
+- Radians
+- Degrees
+- Minutes
+- Seconds
+
 ### Area
 
 - Are
@@ -355,6 +366,8 @@ The base unit of time used in the `unitconverter` crate is seconds.
 - Second
 
 ### Volume
+
+The base unit of volume used in the `unitconverter` crate is cubic meter.
 
 - Liter
 - The cube of any [`LengthUnit`](#length) including a prefix.
