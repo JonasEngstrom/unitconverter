@@ -1,11 +1,12 @@
 //! # Units and Operations Pertaining to Volume
 //! 
-//! The base unt used to store volume in the `unitconverter` crate is liters.
+//! The base unt used to store volume in the `unitconverter` crate is cubic meters.
 
 use crate::macros::*;
 use crate::formulas::*;
 
-use crate::length::LengthUnit;
+use crate::length::{ LengthUnit, LengthMeasurement };
+use crate::area::AreaMeasurement;
 
 /// # Units of Volume
 /// 
@@ -25,11 +26,11 @@ impl VolumeUnit {
     doc_to_base_unit_formula! {
         fn to_base_unit_formula(&self) -> Formula {
             match self {
-                VolumeUnit::Liter => Formula::Multiply{ scale: 1f64 },
+                VolumeUnit::Liter => Formula::Multiply{ scale: 1e-3f64 },
                 VolumeUnit::Cubic(prefix, unit) => {
                     Formula::Multiply{
                         scale: unit
-                            .to_base_unit(Prefix::conversion_constant(&prefix, &Prefix::Deci))
+                            .to_base_unit(Prefix::conversion_constant(&prefix, &Prefix::None))
                             .powi(3)
                     }
                 }
@@ -40,11 +41,11 @@ impl VolumeUnit {
     doc_from_base_unit_formula! {
         fn from_base_unit_formula(&self) -> Formula {
             match self {
-                VolumeUnit::Liter => Formula::Divide{ scale: 1f64 },
+                VolumeUnit::Liter => Formula::Divide{ scale: 1e-3f64 },
                 VolumeUnit::Cubic(prefix, unit) => {
                     Formula::Divide{
                         scale: unit
-                            .to_base_unit(Prefix::conversion_constant(&prefix, &Prefix::Deci))
+                            .to_base_unit(Prefix::conversion_constant(&prefix, &Prefix::None))
                             .powi(3)
                     }
                 }
@@ -83,7 +84,7 @@ impl VolumeUnit {
     }
 
     doc_symbol! {
-        fn symbol(&self) -> String {
+        pub fn symbol(&self) -> String {
             match self {
                 VolumeUnit::Liter => "l".to_string(),
                 VolumeUnit::Cubic(prefix, unit) => {
@@ -99,6 +100,7 @@ impl VolumeUnit {
 }
 
 impl_measurement!(VolumeMeasurement, VolumeUnit);
+impl_multiplication_and_division!(LengthMeasurement, AreaMeasurement, VolumeMeasurement);
 
 #[cfg(test)]
 mod tests {
@@ -106,14 +108,14 @@ mod tests {
 
     #[test]
     fn to_base_units_are_correct() {
-        assert_eq!(VolumeUnit::Cubic(Prefix::Deci, LengthUnit::Meter).to_base_unit(1f64), 1f64);
-        assert_eq!(VolumeUnit::Liter.to_base_unit(1f64), 1f64);
+        assert_almost_eq!(VolumeUnit::Cubic(Prefix::Deci, LengthUnit::Meter).to_base_unit(1f64), 1e-3f64);
+        assert_eq!(VolumeUnit::Liter.to_base_unit(1f64), 1e-3f64);
     }
 
     #[test]
     fn from_base_units_are_correct() {
-        assert_eq!(VolumeUnit::Cubic(Prefix::None, LengthUnit::Meter).from_base_unit(1_000f64), 1f64);
-        assert_eq!(VolumeUnit::Liter.from_base_unit(1_000f64), 1_000f64);
+        assert_eq!(VolumeUnit::Cubic(Prefix::None, LengthUnit::Meter).from_base_unit(1e3f64), 1e3f64);
+        assert_eq!(VolumeUnit::Liter.from_base_unit(1f64), 1e3f64);
     }
 
     #[test]
@@ -152,7 +154,7 @@ mod tests {
         let measurement_two = VolumeMeasurement::from(0.001f64, Prefix::None, VolumeUnit::Cubic(Prefix::None, LengthUnit::Meter));
         let difference = measurement_one - measurement_two;
 
-        assert_eq!(difference.to(Prefix::None, VolumeUnit::Liter), 0f64);
+        assert_almost_eq!(difference.to(Prefix::None, VolumeUnit::Liter), 0f64);
     }
 
     #[test]
@@ -170,6 +172,6 @@ mod tests {
         let measurement_two = VolumeMeasurement::from(0.001f64, Prefix::None, VolumeUnit::Cubic(Prefix::None, LengthUnit::Meter));
         measurement_one -= measurement_two;
 
-        assert_eq!(measurement_one.to(Prefix::None, VolumeUnit::Liter), 0f64);
+        assert_almost_eq!(measurement_one.to(Prefix::None, VolumeUnit::Liter), 0f64);
     }
 }

@@ -119,45 +119,55 @@ macro_rules! impl_square_multiplication_and_division {
 
 pub(crate) use impl_square_multiplication_and_division;
 
-// macro_rules! impl_multiplication_and_division {
-//     ($factor_measurement_type_one: ty, $factor_measurement_type_two: ty, $product_measurement_type: ident) => {
-//         use std::ops::{ Mul, Div };
+macro_rules! impl_multiplication_and_division {
+    (
+        $left_factor_measurement_type: ty,
+        $right_factor_measurement_type: ty,
+        $product_measurement_type: ty
+    ) => {
+        impl std::ops::Mul<$right_factor_measurement_type> for $left_factor_measurement_type {
+            type Output = $product_measurement_type;
 
-//         impl Mul for $factor_measurement_type_one {
-//             type Output = $product_measurement_type;
+            fn mul(self, rhs: $right_factor_measurement_type) -> $product_measurement_type {
+                <$product_measurement_type>::new_from_value(
+                    self.get_value() * rhs.get_value()
+                )
+            }
+        }
 
-//             fn mul(self, rhs: $factor_measurement_type_two) -> $product_measurement_type {
-//                 $product_measurement_type::new_from_value(self.get_value() * rhs.get_value())
-//             }
-//         }
+        impl std::ops::Mul<$left_factor_measurement_type> for $right_factor_measurement_type {
+            type Output = $product_measurement_type;
 
-//         // impl Mul for $factor_measurement_type_two {
-//         //     type Output = $product_measurement_type;
+            fn mul(self, rhs: $left_factor_measurement_type) -> $product_measurement_type {
+                <$product_measurement_type>::new_from_value(
+                    self.get_value() * rhs.get_value()
+                )
+            }
+        }
 
-//         //     fn mul(self, rhs: $factor_measurement_type_one) -> $product_measurement_type {
-//         //         $product_measurement_type::new_from_value(self.get_value() * rhs.get_value())
-//         //     }
-//         // }
+        impl std::ops::Div<$right_factor_measurement_type> for $product_measurement_type {
+            type Output = $left_factor_measurement_type;
 
-//         impl Div<$factor_measurement_type_one> for $product_measurement_type {
-//             type Output = $factor_measurement_type_two;
+            fn div(self, rhs: $right_factor_measurement_type) -> $left_factor_measurement_type {
+                <$left_factor_measurement_type>::new_from_value(
+                    self.get_value() / rhs.get_value()
+                )
+            }
+        }
 
-//             fn div(self, rhs: $factor_measurement_type_one) -> $factor_measurement_type_two {
-//                 <$factor_measurement_type_two>::new_from_value(self.get_value() / rhs.get_value())
-//             }
-//         }
+        impl std::ops::Div<$left_factor_measurement_type> for $product_measurement_type {
+            type Output = $right_factor_measurement_type;
 
-//         // impl Div<$factor_measurement_type_two> for $product_measurement_type {
-//         //     type Output = $factor_measurement_type_one;
+            fn div(self, rhs: $left_factor_measurement_type) -> $right_factor_measurement_type {
+                <$right_factor_measurement_type>::new_from_value(
+                    self.get_value() / rhs.get_value()
+                )
+            }
+        }
+    }
+}
 
-//         //     fn div(self, rhs: $factor_measurement_type_two) -> $factor_measurement_type_one {
-//         //         <$factor_measurement_type_one>::new_from_value(self.get_value() / rhs.get_value())
-//         //     }
-//         // }
-//     }
-// }
-
-// pub(crate) use impl_multiplication_and_division;
+pub(crate) use impl_multiplication_and_division;
 
 macro_rules! doc_to_base_unit_formula {
     ($to_base_unit_formula: item) => {
@@ -252,7 +262,7 @@ pub(crate) use doc_symbol;
 
 /// # Check for Near Equality
 /// 
-/// Checks that two numbers are within 10<sup>-15</sup> of each other, to account for rouding errors due to floating point operations. For internal use.
+/// Checks that two numbers are within 10<sup>-11</sup> of each other, to account for rouding errors due to floating point operations. For internal use in unit testing.
 #[cfg(test)]
 macro_rules! assert_almost_eq {
     ($left: expr, $right: expr) => {

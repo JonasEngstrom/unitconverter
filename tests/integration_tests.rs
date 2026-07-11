@@ -4,6 +4,19 @@ use si_prefixes::Prefix;
 
 use unitconverter::length::{ LengthUnit, LengthMeasurement };
 use unitconverter::area::{ AreaUnit, AreaMeasurement };
+use unitconverter::volume::VolumeUnit;
+
+/// # Check for Near Equality
+/// 
+/// Checks that two numbers are within 10<sup>-11</sup> of each other, to account for rouding errors due to floating point operations. For internal use in testing. (Copied from macros.rs.)
+macro_rules! assert_almost_eq {
+    ($left: expr, $right: expr) => {
+        {
+            const EPSILON: f64 = 1e-11f64;
+            assert!(($left-$right).abs() < EPSILON);
+        }
+    }
+}
 
 #[test]
 fn multiplication_of_length_measurements_work() {
@@ -21,4 +34,13 @@ fn division_of_area_measurement_with_length_measurement_works() {
     let length_measurement_two = area_measurement / length_measurement_one;
 
     assert_eq!(length_measurement_two.to(Prefix::Kilo, LengthUnit::Meter), 1f64);
+}
+
+#[test]
+fn multiplication_of_length_and_area_measurments_work() {
+    let length_measurement = LengthMeasurement::from(1f64, Prefix::Deci, LengthUnit::Meter);
+    let area_measurement = AreaMeasurement::from(1f64, Prefix::None, AreaUnit::Square(Prefix::Deci, LengthUnit::Meter));
+    let volume_measurement = length_measurement * area_measurement;
+
+    assert_almost_eq!(volume_measurement.to(Prefix::None, VolumeUnit::Liter), 1f64);
 }
