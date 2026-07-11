@@ -1,9 +1,8 @@
 #![doc = include_str!("../README.md")]
 #![warn(missing_docs)]
 
+mod macros;
 mod formulas;
-
-pub mod macros;
 
 pub mod constants;
 pub mod time;
