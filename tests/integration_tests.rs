@@ -44,3 +44,12 @@ fn multiplication_of_length_and_area_measurments_work() {
 
     assert_almost_eq!(volume_measurement.to(Prefix::None, VolumeUnit::Liter), 1f64);
 }
+
+#[test]
+fn multiplication_of_area_and_length_measurments_work() {
+    let length_measurement = LengthMeasurement::from(1f64, Prefix::Deci, LengthUnit::Meter);
+    let area_measurement = AreaMeasurement::from(1f64, Prefix::None, AreaUnit::Square(Prefix::Deci, LengthUnit::Meter));
+    let volume_measurement = area_measurement * length_measurement;
+
+    assert_almost_eq!(volume_measurement.to(Prefix::None, VolumeUnit::Liter), 1f64);
+}
