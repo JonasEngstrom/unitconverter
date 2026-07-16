@@ -312,6 +312,15 @@ The base unit of plane and phase angle used in the `unitconverter` crate is radi
     let square_inch_unit = AreaUnit::Square(Prefix::None, LengthUnit::Inch);
     ```
 
+### Count
+
+- One
+- Dozen
+- Lakh
+- Crore
+- Myriad
+- Score
+
 ### Electric Current
 
 The base unit of electric current used in the `unitconverter` crate is amperes.
