@@ -13,6 +13,7 @@ pub mod temperature;
 pub mod amount_of_substance;
 pub mod luminous_intensity;
 pub mod angle;
+pub mod count;
 
 pub mod area;
 pub mod volume;
