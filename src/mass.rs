@@ -1,6 +1,6 @@
 //! # Units and Operations Pertaining to Mass
 //! 
-//! The base unit used to store mass in the `unitconverter` crate is kilograms.
+//! The base unit used to store mass in the `unitconverter` crate is kilogram.
 
 use crate::macros::*;
 use crate::formulas::*;
