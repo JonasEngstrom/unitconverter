@@ -10,7 +10,7 @@ macro_rules! impl_measurement {
 
         /// # Stores a Measurement
         /// 
-        #[doc = concat!("All measurements in the `unitconverter` crate are handled in the same way. They are stored as an `f64` in the base unit of the quantity in question. The types of measurements of different quantities are kept distinct, to enable arithmetic that make sense from a physical standpoint. For more information about supported units for `", stringify!($measurement_identifier), "`s, see the [`", stringify!($unit_type), "`](", stringify!($unit_type), ") documentation page. For supported prefixes, see the [`si-prefixes`](https://crates.io/crates/si-prefixes) crate documentation.")]
+        #[doc = concat!("All measurements in the `unitconverter` crate are handled in the same way. They are stored as an `f64` in the base unit of the quantity in question. The types of measurements of different quantities are kept distinct, to enable arithmetic that make sense from a physical standpoint. For more information about supported units for `", stringify!($measurement_identifier), "`s, see the [`", stringify!($unit_type), "`] documentation page. For supported prefixes, see the [`si-prefixes`](https://crates.io/crates/si-prefixes) crate documentation.")]
         /// 
         /// For more information on how to use the crate, including code examples, see [the crate documentation root page](crate) or the `README.md` file in [the GitHub repo](https://github.com/JonasEngstrom/unitconverter).
         /// 
@@ -34,7 +34,7 @@ macro_rules! impl_measurement {
         impl $measurement_identifier {
             #[doc = concat!("Stores a New `", stringify!($measurement_identifier), "`")]
             /// 
-            #[doc = concat!("Store a new measurement from an `f64` value, an SI prefix, and a unit. For a general code example, see [*General Usage of Measurement Types*](#general-usage-of-measurement-types) above. For supported prefixes see the [`si-prefixes`](https://crates.io/crates/si-prefixes) crate documentation, and for supported units see the [`", stringify!($unit_type), "`](", stringify!($unit_type), ") documentation page.")]
+            #[doc = concat!("Store a new measurement from an `f64` value, an SI prefix, and a unit. For a general code example, see [*General Usage of Measurement Types*](#general-usage-of-measurement-types) above. For supported prefixes see the [`si-prefixes`](https://crates.io/crates/si-prefixes) crate documentation, and for supported units see the [`", stringify!($unit_type), "`] documentation page.")]
             /// 
             /// For more information on how to use the crate, including code examples, see [the crate documentation root page](crate) or the `README.md` file in [the GitHub repo](https://github.com/JonasEngstrom/unitconverter).
             pub fn from(value: f64, prefix: Prefix, unit: $unit_type) -> Self {
@@ -45,7 +45,7 @@ macro_rules! impl_measurement {
     
             #[doc = concat!("Output a Stored `", stringify!($measurement_identifier), "`")]
             /// 
-            #[doc = concat!("Outputs a stored measurement in a desired unit with an SI prefix. For a general code example, see [*General Usage of Measurement Types*](#general-usage-of-measurement-types) above. For supported prefixes see the [`si-prefixes`](https://crates.io/crates/si-prefixes) crate documentation, and for supported units see the [`", stringify!($unit_type), "`](", stringify!($unit_type), ") documentation page.")]
+            #[doc = concat!("Outputs a stored measurement in a desired unit with an SI prefix. For a general code example, see [*General Usage of Measurement Types*](#general-usage-of-measurement-types) above. For supported prefixes see the [`si-prefixes`](https://crates.io/crates/si-prefixes) crate documentation, and for supported units see the [`", stringify!($unit_type), "`] documentation page.")]
             /// 
             /// For more information on how to use the crate, including code examples, see [the crate documentation root page](crate) or the `README.md` file in [the GitHub repo](https://github.com/JonasEngstrom/unitconverter).
             pub fn to(&self, prefix: Prefix, unit: $unit_type) -> f64 {
@@ -168,6 +168,36 @@ macro_rules! impl_multiplication_and_division {
 }
 
 pub(crate) use impl_multiplication_and_division;
+
+macro_rules! impl_division_product {
+    ($numerator:ty, $denominator:ty, $quotient:ty) => {
+        impl std::ops::Div<$denominator> for $numerator {
+            type Output = $quotient;
+
+            fn div(self, rhs: $denominator) -> $quotient {
+                <$quotient>::new_from_value(self.get_value() / rhs.get_value())
+            }
+        }
+
+        impl std::ops::Mul<$denominator> for $quotient {
+            type Output = $numerator;
+
+            fn mul(self, rhs: $denominator) -> $numerator {
+                <$numerator>::new_from_value(self.get_value() * rhs.get_value())
+            }
+        }
+
+        impl std::ops::Mul<$quotient> for $denominator {
+            type Output = $numerator;
+
+            fn mul(self, rhs: $quotient) -> $numerator {
+                <$numerator>::new_from_value(self.get_value() * rhs.get_value())
+            }
+        }
+    };
+}
+
+pub(crate) use impl_division_product;
 
 macro_rules! doc_to_base_unit_formula {
     ($to_base_unit_formula: item) => {
