@@ -60,7 +60,7 @@ impl FrequencyUnit {
 }
 
 impl_measurement!(FrequencyMeasurement, FrequencyUnit);
-impl_multiplication_and_division!(FrequencyMeasurement, crate::time::TimeMeasurement crate::count::CountMeasurement);
+impl_multiplication_and_division!(FrequencyMeasurement, crate::time::TimeMeasurement, crate::count::CountMeasurement);
 
 #[cfg(test)]
 mod tests {
