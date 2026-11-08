@@ -1,6 +1,6 @@
 //! # Units and Operations Pertaining to Length
 //! 
-//! The base unit used to store lengthe in the `unitconverter` is meters.
+//! The base unit used to store length in the `unitconverter` crate is meter.
 
 use crate::macros::*;
 use crate::formulas::*;
