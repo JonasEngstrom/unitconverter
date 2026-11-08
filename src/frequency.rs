@@ -13,7 +13,7 @@ use crate::macros::*;
 ///
 /// 1. [Le Système international d'unités, 9e édition. Sèvres (France): Bureau International des Poids et Mesures; 2025 Aug. doi:10.59161/AUEZ1291](https://www.doi.org/10.59161/AUEZ1291)
 pub enum FrequencyUnit {
-    /// Defined as s<sup>-1</sup>. Since the 2019 revision of the SI system hertz is equal to reciprocal seconds.<sup>1</sup> Represented by the symbol Hz.<sup>1</sup>
+    /// Defined as s<sup>-1</sup>.<sup>1</sup> Represented by the symbol Hz.<sup>1</sup>
     Hertz,
 }
 
@@ -60,11 +60,7 @@ impl FrequencyUnit {
 }
 
 impl_measurement!(FrequencyMeasurement, FrequencyUnit);
-impl_multiplication_and_division!(
-    FrequencyMeasurement,
-    crate::time::TimeMeasurement,
-    crate::count::CountMeasurement
-);
+impl_multiplication_and_division!(FrequencyMeasurement, crate::time::TimeMeasurement crate::count::CountMeasurement);
 
 #[cfg(test)]
 mod tests {
@@ -123,8 +119,7 @@ mod tests {
 
     #[test]
     fn addition_assign_of_frequency_measurements_work() {
-        let mut measurement_one =
-            FrequencyMeasurement::from(2f64, Prefix::None, FrequencyUnit::Hertz);
+        let mut measurement_one = FrequencyMeasurement::from(2f64, Prefix::None, FrequencyUnit::Hertz);
         let measurement_two = FrequencyMeasurement::from(1f64, Prefix::None, FrequencyUnit::Hertz);
         measurement_one += measurement_two;
 
@@ -133,8 +128,7 @@ mod tests {
 
     #[test]
     fn subtraction_assign_of_frequency_measurements_work() {
-        let mut measurement_one =
-            FrequencyMeasurement::from(2f64, Prefix::None, FrequencyUnit::Hertz);
+        let mut measurement_one = FrequencyMeasurement::from(2f64, Prefix::None, FrequencyUnit::Hertz);
         let measurement_two = FrequencyMeasurement::from(1f64, Prefix::None, FrequencyUnit::Hertz);
         measurement_one -= measurement_two;
 
