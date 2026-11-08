@@ -1,6 +1,6 @@
 //! # Units and Operations Pertaining to Electric Current
 //! 
-//! The base unit used to store electric current in the `unitconverter` crate is amperes.
+//! The base unit used to store electric current in the `unitconverter` crate is ampere.
 
 use crate::macros::*;
 use crate::formulas::*;
