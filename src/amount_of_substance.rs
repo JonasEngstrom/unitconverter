@@ -1,6 +1,6 @@
 //! # Units and Operations Pertaining to Amount of Substance
 //! 
-//! The base unit used to store amount of substance in the `unitconverter` crate is moles.
+//! The base unit used to store amount of substance in the `unitconverter` crate is mole.
 
 use crate::macros::*;
 use crate::formulas::*;
