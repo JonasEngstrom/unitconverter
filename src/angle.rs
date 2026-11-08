@@ -1,6 +1,6 @@
 //! # Units and Operations Pertaining to Plane and Phase Angles
 //! 
-//! The base unit used to store plane and phase angles in the `unitconverter` crate is radians.
+//! The base unit used to store plane and phase angles in the `unitconverter` crate is radian. Note that units of solid angles are handled in the module [`solid_angle.rs`][crate::solid_angle].
 
 use crate::macros::*;
 use crate::formulas::*;
