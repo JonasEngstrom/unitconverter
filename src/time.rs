@@ -1,6 +1,6 @@
 //! # Units and Operations Pertaining to Time
 //! 
-//! The base unit used to store temperature in the `unitconverter` crate is seconds.
+//! The base unit used to store time in the `unitconverter` crate is second.
 
 use crate::macros::*;
 use crate::formulas::*;
